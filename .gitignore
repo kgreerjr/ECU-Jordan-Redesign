@@ -1,40 +1,4 @@
-# OS and editor junk
+# Keep Mac and Python clutter out of the repo
 .DS_Store
-Thumbs.db
-desktop.ini
 __pycache__/
 *.pyc
-*.log
-
-# Private notes
-*notes*.md
-
-# EA game files and exports: never publish
-*.xml
-*.dds
-*.lua
-*.fbproject
-*.fbmod
-*.DB
-*.H2
-ROSTER-*
-DYNASTY-*
-
-# Private folders from the working project (exports, backups, builds, research)
-Backups/
-Builds/
-Dup IDs/
-FINAL/
-Research/
-ECU Photos/
-5.0 helmets/
-Tools/
-
-# Binary format patchers (EA user agreement prohibits reverse engineering)
-tdb.py
-tdf.py
-roster_lib.py
-roster_patch.py
-ecu_brand.py
-build_league_patch.py
-build_streameddata_patch.py

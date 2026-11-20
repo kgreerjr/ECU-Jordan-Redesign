@@ -1,9 +1,9 @@
 # Technical reference: CFB 27 apparel swap and custom alternates (ECU, Adidas to Jordan)
 
-The working record kept while building the mod, edited for publication. It covers how the game's
-uniform assets fit together, the fixes that worked, exact field names and values, and the dead ends,
-so a repeat of the process for another team can skip the troubleshooting. Claude (Anthropic) wrote it
-during development as the AI pair-programmer; "the user" means the mod author, who did every Frosty
+A reference for how this mod was built, adapted from the working notes kept during development. It
+covers how the game's uniform assets fit together, the fixes that worked, exact field names and values,
+and the dead ends, so anyone repeating the process for another team can skip the troubleshooting.
+Claude (Anthropic) wrote these notes as the AI pair-programmer. The mod author did every Frosty Editor
 and in-game step and confirmed each result in game.
 
 Final result of part 1, all verified in game:
@@ -157,7 +157,7 @@ Color pairs (R = uniform, G = logo), matching ECU's original Adidas logo colors 
 | ECU_PANTS_2023_WHITE | white | purple | ECU_JM_PurpleOnWhite_col |
 | ECU_PANTS_2023_WHITEALT | white | purple | ECU_JM_PurpleOnWhite_col |
 | ECU_PANTS_2023_BLACK | black | white | ECU_JM_WhiteOnBlack_col |
-| ECU_PANTS_2023_YELLOW | gold | **purple** (user's choice; Adidas was white) | ECU_JM_PurpleOnGold_col |
+| ECU_PANTS_2023_YELLOW | gold | **purple** (mod author's choice; Adidas was white) | ECU_JM_PurpleOnGold_col |
 | ECU_Pants_2023_PURPLE | purple | gold | ECU_JM_GoldOnPurple_col |
 | ECU_Pants_2023_PURPLEALT | purple | gold | ECU_JM_WT_GoldOnPurple_col |
 | ECU_SOCKS_2023_BLACK | black | white | ECU_JM_WhiteOnBlack_col |
@@ -192,66 +192,21 @@ Adidas, because the active roster overrides base data. Existing dynasty saves ca
 
 ## 5. Team database and roster files (summary)
 
-The brand change in sections 4 and 18 required editing two of EA's binary save and database formats.
-That work is described here at a summary level only. The parsers and patchers are not published,
-because EA's user agreement prohibits reverse engineering its formats.
+The brand change also needed edits to the team's base data and to the active roster, which are stored
+in EA's own binary formats. That work is described here only at a high level, and the code is not
+published, because EA's user agreement prohibits reverse engineering its formats.
 
-- **Team database (TDB):** a bit-packed table format where every table carries its own checksum.
-  The change was one field (the team apparel value) plus a recomputed checksum. Importing it alone
-  changed nothing in game, because the active roster overrides the base data.
-- **Roster file:** a compressed container with a checksum over the uncompressed data, holding tagged
-  fields and compressed per-player gear data. The patch swapped 323 Adidas gear items to Jordan
-  equivalents across ECU's 85 players and set the team apparel value.
-- **The checksum matters.** A roster with a stale checksum is silently ignored: the game loads its
-  own roster with no error. This cost a full round of testing.
-- **Verification:** every non-ECU player record and gear entry was compared byte for byte against the
-  original, and ECU had 0 Adidas items left.
-- **Marker test:** rename a player to a same-length name in a test copy. If the game shows the old
-  name, it isn't reading the file.
-- Always patch a fresh in-game "save as new roster", not the roster file on disk, which can be an
+- The team apparel value was changed from Adidas to Jordan Brand in the base team data and in the roster.
+- 323 Adidas cleats and gloves across ECU's 85 players were swapped to Jordan equivalents, using only gear
+  names that already exist in a Jordan school's data. ECU's Nike arm sleeves and pads were left as they were.
+- Every other team's and player's data was verified unchanged, and ECU had no Adidas gear left.
+- Editing the base data alone changed nothing in game, because an active roster overrides it.
+- Start from a fresh in-game "save as new roster" instead of the roster file on disk, which can be an
   older release.
-
-### Gear mapping used in the roster patch (only names that exist in Michigan's data)
-Cleats (high-tops became mids; no Jordan high-top was confirmed):
-| Adidas | Jordan |
-|---|---|
-| shoe_low_AdizeroElectric3 | shoe_low_AirJordan1VaporEdge |
-| shoe_low_AdizeroElectricPlusII | shoe_low_AirJordanRetro1 |
-| shoe_low_Adidas_AdizeroElectricPlus | shoe_low_Jordan5_99Club |
-| shoe_low_AdidasFreak22 | shoe_low_Jordan7 |
-| shoe_low_AdizeroElectric2 | shoe_low_AirJordanRetro1 |
-| shoe_low_Adidas_AdizeroElectricSnake | shoe_low_AirJordanXI |
-| shoe_low_AdidasAdizero_LTA58 | shoe_low_AirJordan1VaporEdge |
-| shoe_mid_AdizeroImpactII | shoe_mid_AirJordanRetro1 |
-| shoe_mid_AdizeroImpactPlusII | shoe_mid_AirJordan3Cement |
-| shoe_mid_AdidasAdizeroPrimeKnit | shoe_mid_Jordan11TD |
-| shoe_mid_AdidasNasty | shoe_mid_AirJordanX |
-| shoe_mid_Adidas_AdizeroImpactPlus (EA's name has no GearFootwear_ prefix) | shoe_mid_Jordan7 |
-| shoe_high_AdidasAdizeroChaos2 | shoe_mid_AirJordanRetro1 |
-| shoe_high_AdidasFreakUltra23 | shoe_mid_Jordan11TD |
-| shoe_high_Adidas_AdizeroChaos | shoe_mid_AirJordan3Cement |
-(All prefixed `GearFootwear_` except where noted.)
-Gloves (`GearHand_glove_` prefix; variant kept):
-| Adidas | Jordan |
-|---|---|
-| AdidasFreak_TeamColor | JordanSuperbad6_TeamColor |
-| AdidasFreak_White | JordanSuperbad6_White |
-| AdidasFreak_Black | JordanSuperbad6_TeamColor (no Jordan black confirmed) |
-| AdidasImpact2_TeamColor | JordanFlyLock_TeamColor |
-| AdidasImpact2_White | JordanFlyLock_White |
-| Adizero13_White | JordanFlyLock2_White |
-| Adizero13MistmatchDSG_TeamColor | JordanFlylock2_TeamColor |
-| Adizero15Electric_TeamColor | JordanVaporJet7_TeamColor |
-| Adizero15Electric_White | JordanSuperbad6_White |
-| Adizero15ElectricExoticDSG_TeamColor | JordanFlylock2_SecondaryColor |
-| Adizero15ElectricExoticDSG_White | JordanFlyLock2_White |
-323 swaps in both the base visuals JSON and the roster. ECU's Nike arm sleeves, knee and thigh pads
-were left as they were. Other Nike-family references for a Nike swap: Ohio State's file
-(`teamdb_ohiost_visuals.JSON`) lists Nike cleat names.
 
 ---
 
-## 7. Roster headshots
+## 6. Roster headshots
 
 - Per-player portraits: `content/ui/ImageAssetLibraries/global/nil/playerportraits/assets/`
   `nilpp_Unique_<Last><First>_<PGID>` (ImageLibraryTexture, DDS BC7 512x512). The player is shown
@@ -265,7 +220,7 @@ were left as they were. Other Nike-family references for a Nike swap: Ohio State
   2,146 pixels changed; alpha untouched. Imported as PNG; confirmed in game.
 - Ruled out: `filesystemcache` (empty), the portrait jersey part item (generic, no vendor layer).
 
-### 7b. Menu helmets (pre-game screens, dynasty story tiles)
+### 6b. Menu helmets (pre-game screens, dynasty story tiles)
 - `content/ui/ImageAssetLibraries/global/TeamHelmets/assets/thel_lthelmets_<TEAM>` and `thel_rthelmets_<TEAM>`
   (left- and right-facing 3D renders, BC7 1024x1024). ECU's had a white "adidas" mark on the black front bumper.
 - `TeamHelmetsFlat/assets/thf_rthelmets_<TEAM>` (the flat cartoon helmet used in dynasty backgrounds) has **no brand
@@ -280,7 +235,7 @@ were left as they were. Other Nike-family references for a Nike swap: Ohio State
 
 ---
 
-## 8. Dead ends, in order (so they aren't repeated)
+## 7. Dead ends, in order (so they aren't repeated)
 
 1. Exported `*_preset` files: material settings only, no logo.
 2. Exported `U_` CharacterUniform wrappers instead of part items. Tell-tale signs: 4 to 7 KB and a
@@ -290,13 +245,13 @@ were left as they were. Other Nike-family references for a Nike swap: Ohio State
 5. Copying the reference team's pants layout map: not loaded, misplaces the logo.
 6. Changing the slot to `jordan_patch_slot`: no effect on anything observed.
 7. teamdb TAPP alone: no in-game effect while a roster is active.
-8. Patching `ROSTER-Official` without the checksum: ignored silently (and it was the older release anyway).
+8. Patching the official roster file on disk: ignored by the game, and it was an older release anyway.
 9. TeamVisuals.BrandName: no effect on the championship swap.
 10. `UseDefaults` / `UseBaseRuleset` with the tinted textures: untinted raw channels.
 11. Assuming the headshots were per-player baked images: they're generic black; the team overlay is
     what carries the logo.
 
-## 9. Scripts
+## 8. Scripts
 
 The published scripts are in `scripts/` (see the README for what each group does). They were written
 for ECU: paths and team values are hardcoded, so adapt them rather than run them blind. Each script
@@ -304,7 +259,7 @@ reads exported XML or images from a project folder set with the `ECU_PROJECT_DIR
 variable (default: the current folder) and writes new files for import. Experiments that didn't ship
 are in `scripts/legacy/`.
 
-## 10. Checklist for the next team (streamlined order)
+## 9. Checklist for the next team (streamlined order)
 
 1. Pick a reference team with the target brand. Get its part items (1 jersey, 1 pants, 1 socks),
    teamdb files, TeamVisuals, and the brand's logo `_col/_norm/_rsm` as DDS.
@@ -315,21 +270,20 @@ are in `scripts/legacy/`.
    duplicate list (one col per pair per source decal, plus norm and rsm per source decal).
    Decode the reference logo's channel layout. Swooshes or other logos may use different channels
    than the Jumpman, so check R/G/A before reusing the formula.
-4. User: make the duplicates, export their XMLs.
+4. Mod author: make the duplicates, export their XMLs.
 5. Claude: build the colored PNGs and the part items (UseDefaults; reference placement for jerseys
    and socks, the team's own for pants unless the layout map is shared; norm/rsm duplicates),
    the teamdb edits (TAPP plus the gear map, built only from names in the reference team's data),
    TeamVisuals.BrandName, and the headshot overlay.
-6. User: import everything, save the project, rebuild, test one jersey first, then the rest.
-7. User: in the game, save the current official roster as a new roster. Claude patches it
-   (team apparel, gear map, checksum) to a new `ROSTER-<NAME>`. Verify in the editor and with a marker
-   test if anything looks wrong.
+6. Mod author: import everything, save the project, rebuild, test one jersey first, then the rest.
+7. Mod author: in the game, save the current official roster as a new roster, then apply the team
+   apparel and gear changes to it (section 5). Verify the result in the roster editor.
 8. Test the full checklist: uniforms, pants, socks, Play Now, preview model, editor gear lists,
    national championship, roster headshots.
 
 ---
 
-# PART 2: custom alternate uniforms, helmets and uniform sets (2026-11-11)
+# PART 2: custom alternate uniforms, helmets and uniform sets
 
 Built on top of the Jordan swap in one long session. Everything below is verified in game unless it
 says otherwise. Two new alternates: **Jolly Roger** (charcoal and gold; replaces the base purple pieces)
@@ -356,7 +310,7 @@ plus a rebuilt, renamed, reordered uniform-set list.
   figure with a light edge, whatever image was imported. The same image in `ECU_TI_JM_Pants_col` (a
   duplicate of the original `ECU_Decal_2021_02_col`) worked at once. Always duplicate an original game texture.
 - A texture used by **only** the piece being replaced can be repainted in place, with no duplicate needed
-  (`ECU_JM_WT_PurpleOnWhite_col`, used only by the base WHITE jersey). Grep all FINAL part items first.
+  (`ECU_JM_WT_PurpleOnWhite_col`, used only by the base WHITE jersey). Search all the import-ready part items first.
 - One duplicate of a texture that several pieces load serves all of them (`ECU_TI_Logo_col` works on the
   jersey and the pants).
 - Duplicates of the base PURPLE jersey's textures also loaded on the base WHITE jersey (the `ECU_JR_*`
@@ -479,8 +433,7 @@ plus a rebuilt, renamed, reordered uniform-set list.
 
 ### 11j. Item names (parked)
 - Item names live in `RimeFootball/CollegeFB/Generic/Localization/CFB_TextDatabase_English`
-  (FsUITextDatabase): a stub pointing at two binary chunks (BinaryChunk 17,845 B, HistogramChunk
-  270,608 B, probably Huffman). `localization_common/platform.JSON` (Legacy Explorer) hold only UI
+  (FsUITextDatabase), stored as compressed binary data. `localization_common/platform.JSON` (Legacy Explorer) hold only UI
   and online strings (2,764 entries, no item names). CFMC has no text editor, so it's parked. The set names
   cover what matters.
 
@@ -501,7 +454,7 @@ plus a rebuilt, renamed, reordered uniform-set list.
   (the hat lettering, deskewed -6°) via `ECU_JR_Helmet_BackECU_col` with norm/rsm nulled, center stripe
   gold/purple/gold 480 px via `ECU_JR_Helmet_Stripe_col`, full length.
 - Set: `Current6thAlternate` "Jolly Roger", black socks, BLASEC.
-- Concept source: a Gemini "Jolly Roger Jordan Alternate" spec and the user's helmet render
+- Concept source: a Gemini "Jolly Roger Jordan Alternate" spec and the mod author's helmet render
   (matte charcoal, full-color skull, gold/purple stripe, black bumpers, gold facemask).
 
 ## 13. Treasure Island (replaces base WHITE jersey, PANTS_2023_WHITEALT, 2021_WHITE helmet)
@@ -516,15 +469,15 @@ plus a rebuilt, renamed, reordered uniform-set list.
   `ECU_JM_WT_PurpleOnWhite_col` in place). Fabric preset borrowed: `ND_JERSEY_2023_BLUE_preset`.
 - Wrapper: ItemPalette primary gunmetal, secondary ND gold → gunmetal gloves; set uses WHISEC
   (white and gold cleats).
-- Pants (`ECU_PANTS_2023_WHITEALT`): gunmetal, solid gold side stripe, the user's logo on the hip
+- Pants (`ECU_PANTS_2023_WHITEALT`): gunmetal, solid gold side stripe, the mod author's logo on the hip
   (`ECU_TI_Logo_col`, UseDefaults), Jumpman white on gunmetal (`ECU_TI_JM_Pants_col`), finish
   `ND_PANTS_2021_GOLD_preset`.
 - Helmet (`ECU_HELMET_2021_WHITE`, "White Helmet 2"): ND gold shell plus `ND_HELMET_2021_GOLD_preset`,
-  gunmetal bumpers, chin and facemask, gold bumper text, the user's alt logo on the sides
+  gunmetal bumpers, chin and facemask, gold bumper text, the mod author's alt logo on the sides
   (`ECU_TI_Helmet_Logo_col`, 70%).
-- Set: `Current7thAlternate` "Treasure Island", slot 4 (swapped ahead of Jolly Roger 2026-11-12), white socks, WHISEC.
-- Iterations that didn't stick: v2 gold pants (looked good, but the user wanted gunmetal); v3 gold jersey
-  with gunmetal numbers ("not loving this").
+- Set: `Current7thAlternate` "Treasure Island", slot 4 (moved ahead of Jolly Roger), white socks, WHISEC.
+- Iterations that didn't stick: v2 gold pants (looked good, but gunmetal fit the concept better); v3 gold jersey
+  with gunmetal numbers (rejected).
 
 ## 14. Duplicate textures (every one, with its source)
 | Duplicate | Duplicated from (original game texture) | Image imported | Used by |
@@ -539,7 +492,7 @@ plus a rebuilt, renamed, reordered uniform-set list.
 | ECU_JR_Helmet_Skull_norm | ECU_Helmet_2021_WHI_Decal_norm | ECU_Helmet_2021_BLA_Decal_norm.dds | JR helmet sides |
 | ECU_JR_Helmet_BackECU_col | ECU_Helmet_2021_WHI_BackLogo_col | serif ECU PNG | JR back bumper |
 | ECU_JR_Helmet_Stripe_col | ECU_Helmet_2021_WHI_Decal_01_col | 480 px stripe PNG | JR center stripe |
-| ECU_TI_Logo_col | ECU_Decal_2021_02_col | user's alt logo (940 px fit) | TI pants hip |
+| ECU_TI_Logo_col | ECU_Decal_2021_02_col | mod author's alt logo (940 px fit) | TI pants hip |
 | ECU_TI_Helmet_Logo_col | ECU_Helmet_2021_BLA_Decal_col | alt logo (70% of BLA footprint) | TI helmet sides |
 | ECU_TI_JM_Pants_col | ECU_Decal_2021_02_col | white-on-gunmetal Jumpman | TI pants |
 | (in place) ECU_JM_WT_PurpleOnWhite_col | n/a: repainted, only WHITE jersey uses it | white-on-gunmetal Jumpman | TI jersey |
@@ -559,12 +512,11 @@ plus a rebuilt, renamed, reordered uniform-set list.
 Dropped from the list (files untouched): CurrentThrowback, CurrentAwayAlternate, CurrentAlternateOption,
 Current5thAlternate, Current_Alt_4.
 
-## 15b. Matte Blackout helmet (2026-11-11, confirmed in game)
+## 15b. Matte Blackout helmet (confirmed in game)
 `ECU_HELMET_2021_BLACKOUT` ("Black Helmet 2", used by Black Pirate and Away Option): only the shell finish names changed,
-`ECU_HELMET_2021_BLACK_preset(_ES_appearance)` → `KU_HELMET_2021_BLACK_preset(_ES_appearance)`. Script `build_blackout_matte.py`,
-file in FINAL `Helmets/`. `2021_BLACK` ("Black Helmet") stays glossy.
+`ECU_HELMET_2021_BLACK_preset(_ES_appearance)` → `KU_HELMET_2021_BLACK_preset(_ES_appearance)`. Script `build_blackout_matte.py`. `2021_BLACK` ("Black Helmet") stays glossy.
 
-## 15c. White Alt glove palette (2026-11-12)
+## 15c. White Alt glove palette
 `U_ECU_JERSEY_2026_WHITEALT` (Away + Away Option) got an ItemPalette: primary global_white, secondary ECU_Purple → white/purple
 TeamColor gloves for both sets (gloves follow the jersey, so two sets sharing a jersey can't differ). Away cleats WHIPRI → WHISEC
 to stay white/purple. Script `build_whitealt_palette.py`.
@@ -578,32 +530,32 @@ to stay white/purple. Script `build_whitealt_palette.py`.
 6. Full-mirror metallic numbers (0.9/0.925): bronze/orange glare in the locker room.
 7. Upper-back logo on the base white jersey: smeared across the yoke.
 8. Purple number outline on charcoal (ECU purple, then #7A4FC0): too thin to read; accepted as solid gold.
-9. Text-table editing: binary Huffman chunks, no tool.
-10. Jolly Roger alt logo (user's charcoal skull + cutlasses art, 2026-11-12): helmet sides (repainted ECU_JR_Helmet_Skull_col,
+9. Item-name text editing: compressed binary data, no editing tool.
+10. Jolly Roger alt logo (the mod author's charcoal skull and cutlasses art): helmet sides (repainted ECU_JR_Helmet_Skull_col,
     UseDefaults; needed overlay scale 0.45 vs stock 0.35 on the 2025 helmet to read) and pants hip (dup ECU_JR_Logo_col).
-    Mostly charcoal art on a charcoal helmet; the user removed it everywhere. 
+    Mostly charcoal art on a charcoal helmet, so it was removed everywhere.
     Size lesson: a side decal's size = overlay_transform scaleU/scaleV; enlarging the image inside the texture barely helps.
 
 ## 17. Workflow for the next custom uniform
-1. User writes the idea (colors, which existing uniform it replaces). Check section 15 (or the team's
+1. The mod author writes the idea (colors, which existing uniform it replaces). Check section 15 (or the team's
    sets) so nothing in use changes by accident.
-2. User exports: the target part items (jersey, pants, helmet) + wrappers, the team's uniform sets and
+2. The mod author exports: the target part items (jersey, pants, helmet) + wrappers, the team's uniform sets and
    TeamVisuals, any reference team's part items, presets and colors, and DDS of any decals to redraw.
 3. Claude: list the layers (label, texture, layout, tint), decode decal channels, plan which textures need
    duplicates (only originals the piece loads) and which colors are local ColorValues.
 4. Build with a script (pattern: `build_jolly_roger.py`, `build_treasure_island.py`,
    `build_jolly_roger_helmet.py`, `build_uniform_sets.py`). Each writes to `Builds/<name>/`,
    activates duplicate-dependent steps only when the duplicate's XML exists, and asserts no broken refs.
-5. User makes duplicates → imports images into them → exports their XMLs (as XML!) into the IDs folder.
+5. The mod author makes duplicates → imports images into them → exports their XMLs (as XML!) into the IDs folder.
 6. Rebuild, import XMLs, export the mod, re-import in Mod Manager, clear mod data, test in the locker room
    (Uniform Name list) and in a live game. Iterate one variable at a time.
 7. When happy: copy outputs into the import-ready folder and keep the replaced versions as backups.
 
-## 18. Dynasty brand (2026-11-12, CLOSED: not fixable by mod)
+## 18. Dynasty brand (not fixable by a mod)
 
 New dynasties started from the patched roster still had ECU in Adidas apparel and gear.
 - Every candidate source in the game's dynasty database files was tested (league, streamed and
-  template databases, with valid checksums). Each loaded fine, and new dynasties were still Adidas.
+  template databases). Each loaded fine, and new dynasties were still Adidas.
 - A diff of two dynasty saves (before and after changing ECU's apparel with MyDynasty) showed the
   apparel value plus re-rolled gear blocks, so the save itself carries the brand.
 - Tests with the official roster file, the active custom roster, and an offline start all came back
@@ -611,6 +563,8 @@ New dynasties started from the patched roster still had ECU in Adidas apparel an
 - **Conclusion:** a new dynasty takes team apparel from the official roster data EA serves at startup,
   held in memory. No file on disk feeds it, so there is no mod-only fix. The supported path is
   MyDynasty's Edit Team step (Team Apparel → Jordan Brand), which the mod's instructions include.
+
+## 19. New items, presets and the master item list
 
 - **Master item list:** `global/Logic/Boot/Flow/Character/CollegeFBCharacterPrefab` > `Objects[0]` (ItemRegistrarData) > `ItemInfos` (10,096 entries). Each `ItemInfo` = ItemName, DisplayName, TeamNames, LoadoutSlots, ItemId, LoadoutShade, role/outfit/authenticity, IsGlobal/CanRemix/HiddenInUI.
   An item missing from this list is invisible to the game: not in the picker, and a preset that uses it loads a random combo every time.
@@ -631,9 +585,9 @@ New dynasties started from the patched roster still had ECU in Adidas apparel an
 
 **Frosty limitation:** CollegeFBCharacterPrefab can be EXPORTED but not re-imported as XML. One boxed `FrostySdk.Ebx.PointerRef` (Interface field -> Cranium_HeadVisuals) makes the importer fail, and fully-qualified type names fail too. Edit it in the property grid only.
 
-**Test assets (reuse for Ghost Ship):** ECU_JERSEY_2026_GHOST, U_ECU_JERSEY_2026_GHOST, CFB/ECU/U_UniformType_ECU_Current9thAlternate, registry [10096]. The obsolete CFB/CHAR/U_UniformType_ECU_Current8thAlternate is no longer referenced. Script: scripts/build_slot_test.py.
+**Test assets (reuse for Ghost Ship):** ECU_JERSEY_2026_GHOST, U_ECU_JERSEY_2026_GHOST, CFB/ECU/U_UniformType_ECU_Current9thAlternate, registry [10096]. The obsolete CFB/CHAR/U_UniformType_ECU_Current8thAlternate is no longer referenced. Script: scripts/legacy/build_slot_test.py.
 
-## 20. Ghost Ship build lessons (2026-11-13)
+## 20. Ghost Ship build lessons
 - **Material (fabric) layers read colorTexture channels as TINT MASKS**, like decals: out = R*colorR + G*colorG + B*colorB.
   A colored PNG shows only its R channel, as gray. Fog = R (white body) + G (mist), with the layer's colorG = the mist color.
 - **Fog tile size:** scaleU/V 0.3 smeared the fog into an even wash. 0.12 shows it. The texture has a few big billows per tile.
@@ -641,7 +595,7 @@ New dynasties started from the patched roster still had ECU in Adidas apparel an
   It is NOT proof the import shrank the image. ECU_JR_Topo_col also reads 16x16 and renders fine.
 - **Helmet logo:** pre-colored art + UseDefaults on a matte shell read beige/chrome, because the stock rsm (= the BLA mask) is read raw and the hat channel acts as metal.
   Fix = Jolly Roger style: the stock BLA mask in our dup, tinted (R trim/ECU lavender, G skull white, B hat cool gray), stock normal/rsm and resolve rule.
-  Softer lines: make_gs_helmet_logo_mask.py adds K x hat channel into the line pixels (K 0.3 = soft gray, the user's pick; 0.12 = charcoal).
+  Softer lines: make_gs_helmet_logo_mask.py adds K x hat channel into the line pixels (K 0.3 = soft gray, the mod author's pick; 0.12 = charcoal).
 - **Wordmark size:** editing the white jersey's EAST CAROLINA overlay transform had no visible effect.
   Copying Jolly Roger's whole PIRATES overlay (copy_overlay, local instances re-GUIDed) into the same slot (overlay_5) gave the right size.
   The same goes for numbers: copy JR's whole `number_offsetScaleSpacing` block.
@@ -664,7 +618,7 @@ New dynasties started from the patched roster still had ECU in Adidas apparel an
   the BASE helmet itself references, and confirm in game, not just the editor.
 
 
-## 21. Ghost Ship (5.0, 2026-11-13) - the first alternate that overwrites nothing
+## 21. Ghost Ship (5.0): the first alternate that overwrites nothing
 - Pieces: ECU_JERSEY_2026_GHOST / ECU_PANTS_2026_GHOST / ECU_HELMET_2026_GHOST (duplicated part items, content rebuilt from the
   stock ECU 2023 WHITE jersey, 2023 WHITEALT pants and 2021 WHITE helmet), wrappers U_ECU_*_2026_GHOST (Ids 91726001-003),
   preset CFB/ECU/U_UniformType_ECU_Current9thAlternate "Ghost Ship" (LoadoutType Light, CurrentOfficial false), master-list
@@ -674,23 +628,23 @@ New dynasties started from the patched roster still had ECU in Adidas apparel an
   PIRATES/numbers/nameplate/AAC = gray #9A99A4 fill + lavender #9479D0 outline (AAC star #6F6E78); Jumpmans = gray figure on a
   lavender #9479D0 outline patch; pants stripe #B9A2DC.
 - Helmet: shell cool white #E9EAF0 with the matte Kansas preset; facemask #9A99A4; center stripe one solid #B9A2DC band (own dup
-  ECU_GS_Helmet_Stripe_col), full length; side logo = the user's ghost ship (tint mask: R lavender #B9A2DC, G white #F2F2F5,
+  ECU_GS_Helmet_Stripe_col), full length; side logo = the mod author's ghost ship (tint mask: R lavender #B9A2DC, G white #F2F2F5,
   B gray #C6C6CA; lines = 6% of gray), 75% of the skull footprint, a texture per side (L shifted +120 px, R -120 px, both -95 px);
   all helmet decals matte (metal 0, smoothness 0.35); back AAC + number gray/lavender; bumper text lavender.
 - Wordmark + number layout copied whole from Jolly Roger (copy_overlay of PIRATES into overlay_5; number_offsetScaleSpacing block).
 - Gloves/cleats: jersey palette primary white, secondary lavender -> WHISEC cleats, TeamColor gloves.
 
-## 22. Polish pass (5.2, 2026-11-13)
+## 22. Polish pass (5.2)
 - Away helmet (stock 2021 WHITESCRIPT): stripe transform w/offsetV -0.28 -> 0 (full length). scripts/build_away_helmet.py.
 - Treasure Island helmet: back AAC + CMU_Jersey_2021_NUM_Array tinted gunmetal fill, gold outline (build_treasure_island.py).
 - Jolly Roger helmet: back number via helmet `numberMaterialSettings.offsetScaleSpacing.backnumberoffset_scale`
   x 0.005 -> 0.21 (+x = viewer's right of the stripe), y -0.153 -> -0.06 (more negative = lower); tint R ECU_Gold, G global_whiteHelmet.
   The number array layer has no overlay_transform of its own: helmet number placement lives in backnumberoffset_scale.
-- 5.4 (ITEM 4): scripts/build_helmet_numbers.py moves every ECU helmet's back number opposite the AAC logo (x 0.21, y -0.06)
-  and tints it like its uniform's jersey numbers (R fill, G outline). It post-processes FINAL/Helmets in place, so
+- 5.4: scripts/build_helmet_numbers.py moves every ECU helmet's back number opposite the AAC logo (x 0.21, y -0.06)
+  and tints it like its uniform's jersey numbers (R fill, G outline). It post-processes the import-ready helmet files in place, so
   RUN IT AFTER any per-uniform helmet build (away, TI, Ghost Ship, blackout). The 7 stock helmets no build touches
   (2025 PURPLE_yellowFacemask, 2021 PURPLE_yellowFacemask, PURPLESCRIPT, PURPLETEXT, WHITEUSA, 2021 WHITE_yellowFacemask,
-  2025 WHITE_blackfacemask, BLACKSCRIPT) now ship in FINAL for this. Fonts unchanged.
+  2025 WHITE_blackfacemask, BLACKSCRIPT) now ship with the mod for this. Fonts unchanged.
 
 - 5.4 final helmet-back layout (build_helmet_numbers.py, tuned in the Uniform Editor on Jolly Roger, back view):
   flag = dup-free Standard_Helmet_2022_USAFlag_w_Border_col at scale 0.1068 x 0.2495 (width = AAC width), offset -0.1395 / 0.274;
@@ -701,7 +655,7 @@ New dynasties started from the patched roster still had ECU in Adidas apparel an
   everything 85% and pushed out (AAC -0.179, flag -0.1725, number x 0.314 z/w 8.30/5.39, sticker 0.180).
   Overlay offsets: ~650 px/unit across, ~300 px/unit up in that view. Measuring editor screenshots with gold/white masks beat eyeballing.
 
-## 23. Ghost Ship 5.0 polish (ITEM 5, 2026-11-14)
+## 23. Ghost Ship polish
 - Helmet: Away-style triple stripe = new art in ECU_GS_Helmet_Stripe_col (stock FiveStripe_02 layout, 2048x1024, bands G122|B135|R509|B135|G122
   centered): R center gray #9A99A4, G outer lavender #B9A2DC, B gaps shell #E9EAF0. Back group uses Away's wide-stripe spacing
   (build_helmet_numbers.py OVR GHOST), number NZ 7.47 / NW 4.85 / X 0.322 for the serif ECU font.
@@ -716,9 +670,9 @@ New dynasties started from the patched roster still had ECU in Adidas apparel an
   the per-slice dialog entries do not take separate files ("Import one DDS file at a time"). Frosty's own export of an array had
   ~2 slices of trailing data; trimmed to exactly 10 slices before import (Builds/Ghost Ship/Font/ECU_2021_NUM_Array_10digits.dds).
 - ECU font arrays store the digit shape in ALPHA (R ~255 everywhere); CMU stores R fill / G outline. The number layer renders both.
-- 6.0 font work (ITEM 9) = this same method per piece: dup the array each piece loads, import the target font.
+- 6.0 font work = this same method per piece: dup the array each piece loads, import the target font.
 
-## 24. Jumpman polish (5.1, 2026-11-15)
+## 24. Jumpman polish (5.1)
 - **Pre-colored (UseDefaults) layers are STILL TINTED**: output = R*colorR + G*colorG + B*colorB. Section 3's "tint fields ignored" was wrong:
   the gold Jumpman rendered copper (R*ECU_Purple + G*ECU_Gold). Fix: identity tints (local ColorValues 1,0,0 / 0,1,0 / 0,0,1). Measured in the
   editor: Jumpman (230,160,0) = PIRATES (230,160,10). Confirmed in game.
@@ -729,7 +683,7 @@ New dynasties started from the patched roster still had ECU in Adidas apparel an
   with the same camera (~3000 px per UV unit at that zoom). Jerseys (0.03, 0.069 / -0.099) and socks (0.07, 0 / 0.315) already used Michigan's values.
 - Scripts: build_pants_jumpman_51.py, build_jumpman_51.py. 
 
-## 25. 6.0 helmets (ITEM 6, 2026-11-16)
+## 25. 6.0 helmets
 - Triple stripes: Home (2025 shell) gold|white|gold purple gaps, Black Pirate/Away Option (2021) gold|purple|gold black gaps, Jolly Roger (2025)
   gold|white|gold charcoal gaps. 2021 helmets copy WHITESCRIPT's overlay_5 + ECU_GS_Helmet_Stripe_col (dup of BLA_Decal); 2025 helmets copy JR's
   overlay_5 + ECU_JR_Helmet_Stripe_col (dup of WHI_Decal_01, triple art re-imported). Matte decal params, no stripe rsm. build_helmets_60.py.
@@ -737,13 +691,13 @@ New dynasties started from the patched roster still had ECU in Adidas apparel an
   ECU_Block_NUM_Array_A (dup of ECU_Jersey_2021_NUM_Array, 2023 block art) = Home, Home Option; ECU_Block_NUM_Array_B (dup of CMU array,
   2023 block art) = Away, Blackout; ECU_GS_Helmet_NUM_Array (dup of CMU, 2021 serif art) = Ghost Ship, Treasure Island; Jolly Roger = ECU_Jersey_2021 direct.
   The 2023 block array has R fill / G outline (renders an outline on helmets); the 2021 serif array is alpha-only (no outline on helmets).
-- **A duplicate made after the 5.0/6.0 project split has a different ID in each project.** Re-export its XML from the 6.0 copy; FINAL follows 6.0.
+- **A duplicate made after the 5.0/6.0 project split has a different ID in each project.** Re-export its XML from the 6.0 copy, which is the one that ships.
 - Warning label: EA places it at offsetU 0.325 on the 2025 shell vs 0.349 on 2021. Home moved to 0.349 so its back group uses Away's exact values.
   Jolly Roger keeps its own number spacing (smaller number, 0.325 label), approved as is.
 - Back group values (all triple stripes except JR): number 0.314/-0.081 size 8.30x5.39; flag -0.1725/0.274 0.0908x0.2121; AAC -0.179/0.03 0.1275x0.2975;
   CJ2K sticker 0.180/0.292 0.1275x0.2975 (Ghost: serif number 0.322, 7.47x4.85).
 
-## 26. Jersey/pants stripes + Away Option jersey (ITEM 8, 2026-11-16)
+## 26. Jersey and pants stripes, Away Option jersey
 - Sleeve stripes: Stripe 1 / Stripe 2 = outer bands, Middle Stripe (WHITEALT: "Gold Stripe") = center, R tint only. Pants ECU_Pants_2023_Stripe_01_col: R center, G outer, B gaps.
 - Away Option jersey = new pieces ECU_JERSEY_2026_AWAYOPT + U_ECU_JERSEY_2026_AWAYOPT (Id 91726004), preset Current2ndAlternate -> new wrapper.
   WHITEALT (Adidas 2026 template: equal-width bands, smooth upper fabric, patch collar) kept on purpose to match Away.
@@ -751,14 +705,14 @@ New dynasties started from the patched roster still had ECU in Adidas apparel an
   jersey tests onto pants). Always check the Type and File Guid in the grid after an import. And copying a master-list entry by editing it
   in place overwrote Ghost Ship's [10096]; new entries go at the END, then fill in.
 
-## Conference logos after realignment (user test, 2026-11-17)
+## 27. Conference logos after realignment
 - Dynasty save with ECU moved to the Big Ten: the **jersey** conference layer (AAC_Decal_2022_Metallic_02_col, AssetResolveRule_UseOverrideRuleset) swapped to the Big Ten logo on every jersey. The **helmet** layer (AAC_Helmet_2022_col on rearStickers, same rule) did NOT show the Big Ten logo on any helmet.
 - Helmets show NO logo after the move (not AAC). Helmet decals in helmets/decals/conferences: AAC_Helmet_2022_col, AAC_Helmet_2023_Decal_P6_col; BIG10_Helmet_2022_Bumper_col + BIG10_Helmet_2026_col; BIG12_Helmet_2022_col; CUSA_Helmet_2022_col; ACC 2022 Decal_01/02/03, WithBevel, 2023, 2025. Ohio State wears a Big Ten sticker on the helmet back; Michigan uses the bumper.
 - Name-swap theory (AAC_ -> BIG10_ in the file name) fits the jersey (BIG10_Decal_2022_Metallic_02_col exists) but NOT the helmet: moved to the Big 12, whose BIG12_Helmet_2022_col exists, the helmet is still blank. So helmet stickers either don't swap at all (per-team, hidden off-conference) or swap to textures ECU's helmets don't load (bundle rule). Next: see how Ohio State's helmet wires its sticker.
 - **Answer: EA's own helmets lose the sticker too.** OSU_HELMET_2021_GREY: overlay_8 'Big Decal' = BIG10_Helmet_2022_Bumper_col (despite the name, that's the rear sticker art) on Helmet_UVSet_rearStickers_col, AssetResolveRule_UseOverrideRuleset, same wiring as ECU's 'AAC  Decal'. Ohio State moved to the Big 12: sticker gone. So the helmet sticker never follows a conference change in this game; the override ruleset drops it off-conference. Jersey patches do follow.
 - Options: keep EA behavior (blank after a move), or AssetResolveRule_UseDefaults on the helmet sticker layer (tints still apply, per section 24) to keep the AAC sticker always (untested whether that alone stops the drop).
 
-## Visor clip logos in a third-party helmet mod (2026-11-18)
+## 28. Visor clip logos in a third-party helmet mod
 
 - A popular helmet and visor mod showed Adidas logos on ECU's visor clips and chin sleeves in every
   mode. That mod is encrypted, so its brand logic wasn't inspected. Testing ruled out every brand
@@ -772,7 +726,7 @@ New dynasties started from the patched roster still had ECU in Adidas apparel an
   (`nike_patch_slot`, `jordan_patch_slot`, `adidas_patch_slot`) with that brand's special decal. Section
   3's fix (pre-colored textures with `UseDefaults`) is why the Jumpman survives it.
 
-## Dynasty gear via Lua (2026-11-18) - WORKED, REJECTED BY USER, REVERTED
+## 29. Dynasty gear via Lua (built, then reverted by design choice)
 - Idea: skip the MyDynasty step by swapping gear at draw time. shoePartLoader_es / handGearPartLoader_es build mesh + preset names from initData.CharacterItemData[slot].Model / .Material; the team is initData.TeamVisuals.AssetName ("ECUXXX").
 - Item -> Model/Material has no naming pattern (GearFootwear_shoe_low_AdizeroElectric3 = shoe_low_AdidasAdizero_Electric3; GearFootwear_shoe_low_AirJordan1VaporEdge = shoe_low_Jordan1VaporEdgeFLP; GearFootwear_shoe_mid_AirJordanRetro1 = shoe_mid_AirJordanRetro1). Gloves all use Model "glove"; Material = glove_AdidasAdizero15Electric_teamColor / glove_JordanVaporJet7_TeamColor / glove_JordanSuperbad6_White.
 - Rule (ECU only, strings containing "adidas"/"adizero"): cleats shoe_low -> shoe_low_Jordan1VaporEdgeFLP, mid/high -> shoe_mid_AirJordanRetro1; gloves white -> glove_JordanSuperbad6_White, else -> glove_JordanVaporJet7_TeamColor. Colors still come from the player's palette.
@@ -780,14 +734,14 @@ New dynasties started from the patched roster still had ECU in Adidas apparel an
 - Result: ECU players drawn in Jordan cleats + gloves; the gear menu still shows the Adidas item names (data unchanged, by design).
 - Rejected: without MyDynasty the gear menu only offers Adidas items, so customization still needs MyDynasty; the swap only collapsed every Adidas pick to 2 cleats + 2 gloves. Reverted to EA's scripts. MyDynasty step stays required.
 
-## Home Alternate build note (2026-11-18)
+## 30. Home Alternate build notes
 - A Frosty XML import with a broken ref (single backslash, e.g. `..._col\317f...` instead of `..._col\\317f...`) is dropped SILENTLY: the asset keeps its old content, no error.
   Cause: re.sub with a plain replacement string turns `\\` into `\`. Always pass refs to re.sub as `lambda m: REF`. Check generated files with:
   grep -E 'ref="[^"]*[^\\]\\[0-9a-f]{8}-'  (must print nothing)
 - If an import "does nothing", export the asset again and diff it against the built file before anything else.
-- Home Alternate gray jersey (2026-11-18): the jersey PART ITEM xml had been imported onto the WRAPPER (same trap as ITEM 8). Re-importing each file onto its own asset fixed it. Check Type in the grid (CharacterUniformJerseyItem vs JerseyPartItem) after every import.
+- Home Alternate gray jersey: the jersey PART ITEM xml had been imported onto the WRAPPER (same trap as section 26). Re-importing each file onto its own asset fixed it. Check Type in the grid (CharacterUniformJerseyItem vs JerseyPartItem) after every import.
 
-## Conference patch colors (2026-11-19)
+## 31. Conference patch colors
 - Jersey conference layer ('AAC Logo', aac_conference_logo_slot, UseOverrideRuleset) keeps its tints when the art swaps to another conference. ACC_Decal art: R = outline, G = letters, B = oval fill. AAC art: B = the star.
 - Treasure Island (ECU_JERSEY_2023_WHITE) had B = ECU_Purple, a color TI doesn't use: purple AAC star, purple ACC oval in an ACC dynasty. Fixed: B -> local ColorValue e8ebca57 (the jersey gunmetal).
 - Other jerseys checked, B left alone (already one of the uniform's own colors): Home, Jolly Roger, Home Alternate, Greenville Nights = purple; Black Pirate, Away, Away Alternate = gold; Ghost Ship = its own dark gray. On white jerseys B must NOT be white: G (letters) is white, so the ACC letters would vanish.

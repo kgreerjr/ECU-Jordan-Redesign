@@ -9,7 +9,6 @@ A PC mod for EA SPORTS College Football 27 that switches East Carolina Universit
 - **docs/technical-reference.md** - A reference covering the game's uniform asset chain, the bundle-loading rule, verified in-game behaviors, and a log of dead ends
 - **docs/images/** - In-game screenshots used in this README
 - **CHANGELOG.md** - Release notes for every version from 1.0 to 6.0
-- **requirements.txt** - Pinned Python packages for the scripts
 
 ## About
 
@@ -24,7 +23,7 @@ A PC mod for EA SPORTS College Football 27 that switches East Carolina Universit
 ## Screenshots
 
 ![ECU Home uniform before and after the mod](docs/images/before-after-adidas-jordan.jpg)
-ECU's Home uniform before and after the mod: Adidas logos, gloves and cleats on the left, and the Jumpman, Jordan gear and the 6.0 helmet stripes on the right.
+ECU's Home uniform before and after the mod: on the left, Adidas logos, gloves and cleats, and on the right the Jumpman, Jordan gear and the 6.0 helmet stripes.
 
 ![Greenville Nights uniform](docs/images/greenville-nights-uniform.jpg)
 Greenville Nights, a City Connect-style uniform in midnight purple with a fine star speckle.
@@ -48,14 +47,14 @@ Jolly Roger, in charcoal with a topographic print and a gold, white and gold hel
 Black Pirate, the black uniform reworked with a matte helmet, a gold, purple and gold triple stripe, and a PIRATES chest wordmark.
 
 ![Helmet backs for all nine uniforms](docs/images/helmet-backs-all-uniforms.jpg)
-Helmet backs for all nine uniforms. The No Quarter flag replaced the conference sticker, which the game removes from every helmet after a conference change in dynasty.
+Helmet backs for all nine uniforms. The No Quarter flag replaced the conference sticker, which the game removes from every helmet after a conference change in dynasty. I also added the Chris Johnson sticker ECU wears in real life to the back of every helmet.
 
 ![Captain patch](docs/images/captain-patch.jpg)
-The captain patch, Michigan style: only team captains wear the C.
+The captain patch: only team captains wear the C.
 
 ## Built With
 
-Frosty Editor (MMC Edition) | Frosty Mod Manager (MMC Edition) | Python | Pillow | NumPy | SciPy | OpenCV | Google Gemini | Claude (Anthropic)
+Frosty Editor (MMC Edition) | Frosty Mod Manager (MMC Edition) | Python | Pillow | NumPy | SciPy | OpenCV | Claude (Anthropic) | Google Gemini
 
 ## Setup
 
@@ -64,7 +63,7 @@ Frosty Editor (MMC Edition) | Frosty Mod Manager (MMC Edition) | Python | Pillow
 3. For Jordan gear on players, copy `ROSTER-ECUJORDAN` into `Documents\EA SPORTS College Football 27\saves` and load it from the main menu.
 4. For dynasty files, use MyDynasty to change "Team Apparel" to "Jordan Brand".
 
-The scripts are a record of how the mod was built, not a standalone tool. They read XML and images exported from Frosty Editor. To run one, install the packages with `pip install -r requirements.txt`, set `ECU_PROJECT_DIR` to the folder that holds the exports, and import the files it writes back into Frosty Editor.
+The scripts are a record of how the mod was built, not a standalone tool. They read XML and images exported from Frosty Editor.
 
 ## Notes
 
