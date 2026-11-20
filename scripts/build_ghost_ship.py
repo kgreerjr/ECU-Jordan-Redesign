@@ -1,6 +1,6 @@
 # ECU "Ghost Ship": white + lavender fog, lavender PIRATES/numbers/trim, matte white helmet with the black-line skull.
 # All pieces are NEW duplicates (no base piece overwritten): ECU_JERSEY_2026_GHOST, ECU_PANTS_2026_GHOST, ECU_HELMET_2026_GHOST (+ U_ wrappers),
-# preset CFB/ECU/U_UniformType_ECU_Current9thAlternate. Content is rebuilt from the stock ECU pieces, identity (partition/GUID/Name) from the user's duplicate exports.
+# preset CFB/ECU/U_UniformType_ECU_Current9thAlternate. Content is rebuilt from the stock ECU pieces, identity (partition/GUID/Name) from the mod author's duplicate exports.
 # usage: python3 build_ghost_ship.py   -> Builds/Ghost Ship/{Jerseys,Pants,Helmet,Wrappers,Uniform sets}
 import os, re, uuid
 src = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'build_treasure_island.py'), encoding='utf-8').read()
@@ -13,7 +13,7 @@ LAV = hexlin('#B9A2DC'); WISP = hexlin('#B5B4BD'); TRIM = hexlin('#A9A8B2'); DAR
 FOG_SCALE = '0.12'                                  # fog tile size in UV. v1 0.3 = smeared to an even wash (JR notes: 0.2 already 'blurry bands'); 0.11 proven crisp
 log = []
 def identity(base_text, dup_xml):
-    """Content of base_text, identity (partition guid, primary instance guid, Name) of the user's duplicate."""
+    """Content of base_text, identity (partition guid, primary instance guid, Name) of the mod author's duplicate."""
     d = rd(dup_xml); pd = re.search(r'<partition guid="([^"]+)" primaryInstance="([^"]+)"', d); nd = re.search(r'name="Name">([^<]+)', d).group(1)
     pb = re.search(r'<partition guid="([^"]+)" primaryInstance="([^"]+)"', base_text); nb = re.search(r'name="Name">([^<]+)', base_text).group(1)
     return base_text.replace(pb.group(1), pd.group(1)).replace(pb.group(2), pd.group(2)).replace('>%s<' % nb, '>%s<' % nd)
@@ -56,7 +56,7 @@ for lab in ['Vapor Untouchable Fabric', 'Sleeve Fabric']: fog(J, lab, JRD_ + '..
 fog_scale(J); log.append('jersey: fog on torso + sleeves (ECU_GS_Fog_Jersey_col, scale %s)' % FOG_SCALE)
 trim = J.color(TRIM)
 for lab in ['Collar Fabric', 'Sleeve Cuff']: J.tint('R', trim, lab)
-# v5 (user): copy Jolly Roger's whole PIRATES layer (texture + transform + norm/rsm, its local instances get new GUIDs) into the ECU Logo slot.
+# v5 (mod author): copy Jolly Roger's whole PIRATES layer (texture + transform + norm/rsm, its local instances get new GUIDs) into the ECU Logo slot.
 # (v1-4 swapped textures into the white jersey's EAST CAROLINA layer and edited its transform; scale changes had no visible effect.)
 JRJ = rd(R + '/Builds/Jolly Roger/Jerseys/ECU_JERSEY_2023_PURPLE.xml')
 slot = re.findall(r'<field name="(overlay_\d+)">', J.t[:J.t.index('<field name="label">ECU Logo</field>')])[-1]
@@ -73,7 +73,7 @@ JRJ = rd(R + '/Builds/Jolly Roger/Jerseys/ECU_JERSEY_2023_PURPLE.xml')
 for s_, d_ in (('Stripe 1', 'overlay_9'), ('Stripe 2', 'overlay_10'), ('Middle Stripe', 'overlay_13'), ('Sleeve Cuff Stripe', 'overlay_14')): copy_overlay(J, JRJ, s_, d_, lav if s_ in ('Stripe 1', 'Stripe 2') else trim)   # v5: the two slash stripes lavender
 log.append('jersey: lavender slash stripes; gray middle/cuff stripe, collar, cuffs')
 a, b = J.block('Jumpman Logo'); seg, c = re.subn(r'ref="[^"]*/ECU_JM_WT_PurpleOnWhite_col\\\\[^"]*" partitionGuid="[^"]*"', lambda mm: idref(DUP + 'ECU_GS_JM_Jersey_col.xml'), J.t[a:b]); assert c == 1; J.t = J.t[:a] + seg + J.t[b:]
-# v5 (user): number size/position/spacing = Jolly Roger's (whole number_offsetScaleSpacing block: chest/back/sleeve/shoulder offset+scale, spacing)
+# v5 (mod author): number size/position/spacing = Jolly Roger's (whole number_offsetScaleSpacing block: chest/back/sleeve/shoulder offset+scale, spacing)
 def nblock(x):
     st = x.index('<complex type="number_offsetScaleSpacing">'); d = 0
     for m_ in re.finditer(r'<complex type="[^"]*">|</complex>', x[st:]):
@@ -96,8 +96,8 @@ hlav, hmask = H.color(LAV), H.color(MASK)
 H.tint('R', H.color(hexlin('#E9EAF0')), 'Helmet Shell')   # v3: cool white - stock global_offWhiteHelmetShell read beige under the matte finish
 # v5: like the Jolly Roger helmet - ECU's stock BLA skull MASK (in our dup, lines nudged to soft charcoal by make_gs_helmet_logo_mask.py),
 # tinted per channel; stock normal/rsm + stock resolve rule. (v1-4 pre-colored + UseDefaults read the stock rsm raw: hat = metal -> beige/chrome)
-HELMET_LOGO = 'ship'   # 'ship' = user's ghost-ship art (make_gs_ship_logo.py), 'skull' = stock BLA skull (make_gs_helmet_logo_mask.py). Import the matching PNG
-if HELMET_LOGO == 'ship':   # mask from the user's art: no matching normal/rsm -> null both (Jolly Roger helmet logo style)
+HELMET_LOGO = 'ship'   # 'ship' = mod author's ghost-ship art (make_gs_ship_logo.py), 'skull' = stock BLA skull (make_gs_helmet_logo_mask.py). Import the matching PNG
+if HELMET_LOGO == 'ship':   # mask from the mod author's art: no matching normal/rsm -> null both (Jolly Roger helmet logo style)
     lt, ls, lh = H.color(hexlin('#B9A2DC')), H.color(hexlin('#F2F2F5')), H.color(hexlin('#C6C6CA'))   # lavender, white, gray
     for lab in ['Right Side Logo', 'Left Side Logo']:   # both sides share UV orientation (no mirroring) -> a shifted logo needs its own texture per side
         tex = DUP + ('ECU_GS_Helmet_Logo_R_col.xml' if lab == 'Right Side Logo' and os.path.exists(DUP + 'ECU_GS_Helmet_Logo_R_col.xml') else 'ECU_GS_Helmet_Logo_col.xml')

@@ -1,4 +1,4 @@
-"""Home Alternate (6.0, 2026-11-18): purple counterpart of Away Alternate, listed just before it.
+"""Home Alternate (6.0): purple counterpart of Away Alternate, listed just before it.
 Jersey = Away Alternate jersey with the approved purple look (build_purple_aa_preview.py purplehat) + its own Jumpman dup
 (ECU_JM_HA_GoldOnPurple_col, dup of ECU_JM_PurpleOnWhite_col which this jersey loads). Helmet/pants = Frosty copies of
 Away Alternate's (no edits). Wrappers Ids 91726009-011, preset Current10thAlternate (dark, WHIPRI cleats, white socks).

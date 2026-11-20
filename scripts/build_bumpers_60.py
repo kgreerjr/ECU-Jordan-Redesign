@@ -1,4 +1,4 @@
-"""ITEM 6.5 - helmet bumpers (6.0).
+"""Helmet bumpers (6.0).
 Front bumper = "ECU", back bumper = jersey wordmark, bumper color = shell
 (TI gunmetal kept, Home Option ECU Purple, Jolly Roger charcoal).
 Edits FINAL/Helmets in place. Usage: python build_bumpers_60.py <Helmets dir>"""

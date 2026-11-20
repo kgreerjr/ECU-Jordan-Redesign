@@ -1,7 +1,7 @@
-"""ITEM 10: Home Option = City Connect helmet (ECU_HELMET_2021_PURPLE_yellowFacemask).
+"""Home Option = City Connect helmet (ECU_HELMET_2021_PURPLE_yellowFacemask).
 - Left/Right Side Logo layers -> the airbrushed panels (ECU_CC_Helmet_Left/Right_col), full UV coverage (scale 1, offset 0),
   full color (UseDefaults + identity tints), no emboss/shine maps, one satin surface (metal 0, reflectance 0.4, smoothness 0.5).
-  Grid test 2026-11-16: these two layers cover the whole shell, one half each.
+  Grid test: these two layers cover the whole shell, one half each.
 - Center Stripe layer -> ECU_CC_Helmet_Back_col (gold center stripe + gold pinstripes, clear between), Blackout's stripe width
   (scaleU 0.45), matte like every 6.0 stripe.
 - Shell -> ECU Purple. Back stickers (AAC, flag, CJ2K, warning label) + back number -> Black Pirate's values (same 2021 shell,
@@ -65,14 +65,14 @@ k = b.index('<field name="backnumberoffset_scale">'); nb = re.findall(r'<field n
 k = s.index('<field name="backnumberoffset_scale">'); seg = s[k:k + 300]
 for c, v in nb: seg = re.sub(r'(<field name="%s">)[^<]*' % c, lambda x, v=v: x.group(1) + v, seg, count=1)
 s = s[:k] + seg + s[k + 300:]; print('number', nb)
-# v7 (user, City Connect only): back layout - no flag, number centered, CJ2K sticker where the number was (AAC's height).
+# v7 (mod author, City Connect only): back layout - no flag, number centered, CJ2K sticker where the number was (AAC's height).
 a, e = span(s, 'Flag'); s = s[:a] + sub(s[a:e], 'colorTexture', 'ref="null"') + s[e:]
 g = tf_of(s, 'CJ2K Sticker'); v = tf_vals(s, g); s = set_tf(s, g, (v[0], v[1], '0.1217', '0.03', v[4]))
-# v7.1 (user): AAC and CJ2K closer to the number, equal gaps (~90 px in the zoomed back view; measured ~1554 px per offset unit)
+# v7.1 (mod author): AAC and CJ2K closer to the number, equal gaps (~90 px in the zoomed back view; measured ~1554 px per offset unit)
 g = tf_of(s, 'AAC  Decal'); v = tf_vals(s, g); s = set_tf(s, g, (v[0], v[1], '-0.1355', '0.03', v[4]))
 k = s.index('<field name="backnumberoffset_scale">'); seg = re.sub(r'(<field name="x">)[^<]*', r'\g<1>0', s[k:k + 300], count=1); s = s[:k] + seg + s[k + 300:]
 print('back: flag off, number x 0, CJ2K -> 0.180 / 0.03')
-# v5 (user): no stripe - the two paintings meet in one shared colour along the crown and both centerlines.
+# v5 (mod author): no stripe - the two paintings meet in one shared colour along the crown and both centerlines.
 a, e = span(s, 'Center Stripe'); s = s[:a] + sub(s[a:e], 'colorTexture', 'ref="null"') + s[e:]
 print('Center Stripe: off')
 # draw order: higher overlay number = drawn on top. The panels (8, 9) covered the stripe (5), flag (6) and warning label (7).

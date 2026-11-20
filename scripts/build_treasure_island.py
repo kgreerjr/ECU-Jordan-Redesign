@@ -62,8 +62,8 @@ def idref(xml):
     x = rd(xml); pg = re.search(r'<partition guid="([^"]+)" primaryInstance="([^"]+)"', x); nm = re.search(r'name="Name">([^<]+)', x).group(1)
     return 'ref="%s\\\\%s" partitionGuid="%s"' % (nm, pg.group(2), pg.group(1))
 # ---------------- jersey (base WHITE) ----------------
-# v3 (user): jersey body = the pants gold, trim + numbers gunmetal; pants gunmetal with a gold stripe. (v1/v2 were gunmetal jersey, gold pants)
-# v4 (user): pants stay v3 (gunmetal + gold stripe); jersey back to gunmetal body with gold trim + Shamrock-gold numbers, now satin instead of mirror
+# v3 (mod author): jersey body = the pants gold, trim + numbers gunmetal; pants gunmetal with a gold stripe. (v1/v2 were gunmetal jersey, gold pants)
+# v4 (mod author): pants stay v3 (gunmetal + gold stripe); jersey back to gunmetal body with gold trim + Shamrock-gold numbers, now satin instead of mirror
 J = Doc(rd(R + '/Backups/Pre-alternates FINAL/Jerseys/ECU_JERSEY_2023_WHITE.xml')); body, trim = J.color(GUN), J.color(NDGOLD); fill, outl = J.color(SHAM_FILL), J.color(SHAM_OUT)
 for lab in ['Vapor Untouchable Fabric', 'Nike Vent Holes', 'Vent Holes - Nameplate Area', 'Sleeve Fabric', 'TShirtandPads']: J.tint('R', body, lab)
 for lab in ['Collar Fabric', 'Sleeve Cuff']: J.tint('R', trim, lab)
@@ -80,7 +80,7 @@ JRJ = rd(R + '/Builds/Jolly Roger/Jerseys/ECU_JERSEY_2023_PURPLE.xml')
 for src, dst in (('Stripe 1', 'overlay_9'), ('Stripe 2', 'overlay_10'), ('Middle Stripe', 'overlay_13'), ('Sleeve Cuff Stripe', 'overlay_14')): copy_overlay(J, JRJ, src, dst, trim)
 log.append('jersey: gold sleeve slash stripes + cuff stripe (JR layers)')
 TI_LOGO = JRD + 'ECU_TI_Logo_col.xml'
-for lab in ['Sleeve Decals - Long Sleeves', 'Sleeve Decals - Standard and Tight Sleeves']:   # v6: user removed the shoulder logo (stripes carry the sleeve)
+for lab in ['Sleeve Decals - Long Sleeves', 'Sleeve Decals - Standard and Tight Sleeves']:   # v6: mod author removed the shoulder logo (stripes carry the sleeve)
     J.field('colorTexture', 'ref="null"', lab); J.field('normalTexture', 'ref="null"', lab); J.field('rsmTexture', 'ref="null"', lab)
 log.append('jersey: shoulder/sleeve logos removed')
 J.assetname('ECU_JERSEY_2023_WHITE_preset', 'ND_JERSEY_2023_BLUE_preset'); J.assetname('ECU_JERSEY_2023_WHITE_preset_ES_appearance', 'ND_JERSEY_2023_BLUE_preset_ES_appearance')

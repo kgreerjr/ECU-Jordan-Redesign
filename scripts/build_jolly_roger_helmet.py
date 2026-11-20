@@ -37,14 +37,14 @@ def overlay(t, label):
 def set_field(seg, fld, val):   # val = 'ref=... partitionGuid=...' or 'ref="null"'
     seg, c = re.subn(r'<field name="%s" ref="[^"]*"( partitionGuid="[^"]*")? />' % fld, lambda m: '<field name="%s" %s />' % (fld, val), seg, 1); assert c == 1, fld; return seg
 have = lambda n: os.path.exists(JRD + n + '.xml')
-JR_ALT_LOGO = False; JR_LOGO_SCALE = '0.45'   # alt logo on helmet tried 2026-11-12 (needed scale 0.45 to read) - user preferred ECU's BLA skull -> off
+JR_ALT_LOGO = False; JR_LOGO_SCALE = '0.45'   # alt logo on helmet tried (needed scale 0.45 to read) - mod author preferred ECU's BLA skull -> off
 #  # False = ECU's BLA skull (import ECU_Helmet_2021_BLA_Decal_col.dds into ECU_JR_Helmet_Skull_col instead of the alt-logo PNG)
 if have('ECU_JR_Helmet_Skull_col') and have('ECU_JR_Helmet_Skull_norm'):
     GOLD_R, WHITE_R, PUR_R = teamref('ECU_Gold'), teamref('global_whiteHelmet'), teamref('ECU_Purple')
     for lab in ['Right Side Logo', 'Left Side Logo']:
         s, e = overlay(t, lab); seg = set_field(t[s:e], 'colorTexture', idref('ECU_JR_Helmet_Skull_col')); seg = set_field(seg, 'normalTexture', idref('ECU_JR_Helmet_Skull_norm'))
         for ch, v in (('R', GOLD_R), ('G', WHITE_R), ('B', PUR_R)): seg = set_field(seg, 'color' + ch, v)
-        if JR_ALT_LOGO:   # v2: the user's full-color Jolly Roger logo, repainted into ECU_JR_Helmet_Skull_col (only this helmet uses it)
+        if JR_ALT_LOGO:   # v2: the mod author's full-color Jolly Roger logo, repainted into ECU_JR_Helmet_Skull_col (only this helmet uses it)
             seg = set_field(seg, 'normalTexture', 'ref="null"'); seg = re.sub(r'<field name="assetResolveRuleType">[^<]*', '<field name="assetResolveRuleType">AssetResolveRule_UseDefaults', seg, 1)
         t = t[:s] + seg + t[e:]; log.append('%-15s -> %s' % (lab, 'Jolly Roger alt logo (pre-colored, UseDefaults)' if JR_ALT_LOGO else 'BLA skull: gold outline/ECU, white skull, purple hat'))
         if JR_ALT_LOGO:   # decal size = overlay_transform scaleU/scaleV (+ scaledTransform x/y). Stock 0.35 here (Treasure Island's 2021 helmet: 0.40/0.43)
@@ -75,7 +75,7 @@ if have('ECU_JR_Helmet_Stripe_col'):   # center stripe: copy PURPLETEXT's five-s
 for old, new in (('ARK_HELMET_2021_RED_preset<', 'KU_HELMET_2021_BLACK_preset<'), ('ARK_HELMET_2021_RED_preset_ES_appearance<', 'KU_HELMET_2021_BLACK_preset_ES_appearance<')):
     assert t.count('>' + old) == 1, old; t = t.replace('>' + old, '>' + new); log.append('shell finish    -> ' + new[:-1])
 fm = re.search(r'<field name="faceMaskColor" ref="([0-9a-f-]{36})" />', t).group(1); t = setcolor(t, fm, GOLD); log.append('facemask      -> gold')
-# 5.2 (user): back number moved beside the stripe (it sat on the gold/purple stripe) and colored like the AAC logo: gold fill, white outline
+# 5.2 (mod author): back number moved beside the stripe (it sat on the gold/purple stripe) and colored like the AAC logo: gold fill, white outline
 NUM_X, NUM_Y = '0.246', '-0.081'   # backnumberoffset_scale x/y (stock 0.005 / -0.153 = centered, low on the stripe). 0.16 moved it ~half a number width; target = mirror of the AAC logo (left side, mid-height)
 k = t.index('<field name="backnumberoffset_scale">'); seg, c = re.subn(r'(<field name="x">)[^<]*', lambda m: m.group(1) + NUM_X, t[k:k + 250], 1); seg, c2 = re.subn(r'(<field name="y">)[^<]*', lambda m: m.group(1) + NUM_Y, seg, 1); assert c == c2 == 1; t = t[:k] + seg + t[k + 250:]
 k = t.index('ECU_Jersey_2021_NUM_Array'); s_ = t.rfind('<field name="textures">', 0, k); e_ = t.index('<field name="info">', k)

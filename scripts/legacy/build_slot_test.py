@@ -1,5 +1,5 @@
 # "Unlock more slots" test: an 8th uniform preset ("Slot Test") wearing a DUPLICATED jersey (red-number marker).
-# Inputs: Slot test/*.xml (user's Frosty duplicates of ECU_JERSEY_2023_WHITE, U_ECU_JERSEY_2023_WHITE, U_UniformType_ECU_CurrentHome)
+# Inputs: Slot test/*.xml (mod author's Frosty duplicates of ECU_JERSEY_2023_WHITE, U_ECU_JERSEY_2023_WHITE, U_UniformType_ECU_CurrentHome)
 # Output: Slot test/IMPORT - *.xml (3 duplicates edited + TeamVisuals with 8 presets). No subfolders: Windows blocks new folders under Program Files.
 import os, re
 src = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'build_treasure_island.py'), encoding='utf-8').read()

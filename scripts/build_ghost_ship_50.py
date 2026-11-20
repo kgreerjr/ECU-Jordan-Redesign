@@ -1,4 +1,4 @@
-# 5.0 polish for Ghost Ship (ITEM 5). Post-processes the FINAL Ghost files IN PLACE.
+# 5.0 polish for Ghost Ship. Post-processes the FINAL Ghost files IN PLACE.
 # Revert copies: Backups/Ghost Ship pre-polish/
 #  helmet: Away-style triple stripe (texture ECU_GS_Helmet_Stripe_col <- ECU_TripleStripe PNG, FiveStripe layout):
 #          R center = gray, G outer = lavender, B gaps = shell; back number font = the jersey's (ECU_Jersey_2023_NUM_Array)

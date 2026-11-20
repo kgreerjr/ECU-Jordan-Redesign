@@ -1,5 +1,5 @@
-"""ITEM 10: City Connect "Greenville Nights" jersey + pants (phase 1).
-Jersey = the user's copy of Home's jersey (ECU_JERSEY_2026_CITY): midnight-purple star-speckle fabric (body + sleeves),
+"""City Connect "Greenville Nights" jersey + pants (phase 1).
+Jersey = the mod author's copy of Home's jersey (ECU_JERSEY_2026_CITY): midnight-purple star-speckle fabric (body + sleeves),
 gold PIRATES, gold numbers / white outline (name too), gold captain C; sleeves already gold|white|gold.
 Pants = copy of Jolly Roger's pants (ECU_PANTS_2026_CITY): same star fabric, gold|white|gold stripe with midnight gaps.
 Wrappers 91726007 / 91726008; preset CurrentAlternate (Home Option slot) -> new jersey + pants.
@@ -62,7 +62,7 @@ J.t = J.t[:cp.start(1)] + blk + J.t[cp.end(1):]
 wr(FIN + '/Jerseys/ECU_JERSEY_2026_CITY.xml', J.done())
 # ---- pants
 P = Doc(rd(DUP + '/ECU_PANTS_2026_CITY.xml')); assert 'type="PantsPartItem"' in P.t
-P.fabric('Adidas Base Fabric', SP, haze=MID)   # v2 (user preview): pants haze read as big blotches -> haze tinted = base (stars only)
+P.fabric('Adidas Base Fabric', SP, haze=MID)   # v2 (mod author preview): pants haze read as big blotches -> haze tinted = base (stars only)
 P.tint('Stripe', B=P.cv(MID))                                      # R white center, G gold outers (kept), gaps midnight
 wr(FIN + '/Pants/ECU_PANTS_2026_CITY.xml', P.done())
 # ---- wrappers

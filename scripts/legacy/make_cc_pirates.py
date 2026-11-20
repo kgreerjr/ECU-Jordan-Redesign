@@ -5,7 +5,7 @@ import sys, struct, numpy as np, texture2ddecoder
 from PIL import Image
 from scipy import ndimage
 src, out = sys.argv[1], sys.argv[2]; K = 0.92; N = 2048
-b = open(src, 'rb').read(); w, h = struct.unpack('<II', b[16:20])[::-1] if False else struct.unpack('<II', b[12:20])[::-1]
+b = open(src, 'rb').read(); w, h = struct.unpack('<II', b[12:20])[::-1]
 raw = texture2ddecoder.decode_bc3(b[148:148 + (w // 4) * (h // 4) * 16], w, h)
 A = np.asarray(Image.frombytes('RGBA', (w, h), raw, 'raw', 'BGRA'))[..., 3].astype(float) / 255
 big = np.asarray(Image.fromarray((A * 255).astype(np.uint8)).resize((N, N), Image.BICUBIC)).astype(float) / 255

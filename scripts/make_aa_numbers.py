@@ -3,7 +3,7 @@
 # Same layout as ECU_Jersey_2023_NUM_Array: 10 slices of 512x512, digit box y 34-477 (~444 px tall incl. outline),
 # centred at x ~258; R = fill, G = outline, alpha = coverage. Written as a BC7_UNORM_SRGB (dxgi 99) texture array,
 # 10 mips, arraySize 10 (Frosty imports an array from one DDS holding every slice).
-# usage: make_aa_numbers.py <Antonio.ttf> <out.dds> <preview.png> [digit sheet image]   (v2 = the user's sheet)
+# usage: make_aa_numbers.py <Antonio.ttf> <out.dds> <preview.png> [digit sheet image]   (v2 = the mod author's sheet)
 import sys, struct, numpy as np, etcpak
 from PIL import Image, ImageDraw, ImageFont
 from scipy import ndimage
@@ -14,7 +14,7 @@ srgb = lambda c: np.where(c <= 0.0031308, c * 12.92, 1.055 * np.clip(c, 0, None)
 slices = []
 SHEET = sys.argv[4] if len(sys.argv) > 4 else None
 if SHEET:
-    # v2 (user's digit sheet, number_sheet_user.jpg: purple digits with a gold outline on white, 0-4 over 5-9):
+    # v2 (mod author's digit sheet, number_sheet_user.jpg: purple digits with a gold outline on white, 0-4 over 5-9):
     # unmix every pixel into white / purple / gold weights, cut out each digit, one common scale for all ten
     # (tallest digit = the 444 px box), each row's top kept so the digits stay aligned, centred at x 258.
     img = ndimage.gaussian_filter(np.asarray(Image.open(SHEET).convert('RGB')).astype(float), (0.7, 0.7, 0))

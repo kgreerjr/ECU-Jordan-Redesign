@@ -1,4 +1,4 @@
-"""ITEM 10 phase 2 v2 (user: no medallion on the sleeve stripes): City Connect patch at the front collar, in Away's collar-logo
+"""Phase 2 v2 (mod author: no medallion on the sleeve stripes): City Connect patch at the front collar, in Away's collar-logo
 spot (WHITEALT 'Collar Patch' layer: offset 0 / -0.125, just under the V). Full colour (UseDefaults + identity tints), no emboss.
 usage: build_cc_collar_patch_60.py <CITY jersey xml in/out> <WHITEALT jersey xml> <ECU_CC_Patch_col dup xml> [scale]"""
 import re, sys, uuid, xml.etree.ElementTree as ET

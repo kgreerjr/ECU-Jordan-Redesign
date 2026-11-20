@@ -1,4 +1,4 @@
-# 6.0 ITEM 6: every in-use helmet's back number uses its jersey's font. Fonts follow the bundle rule: a copy of an array the helmet
+# 6.0: every in-use helmet's back number uses its jersey's font. Fonts follow the bundle rule: a copy of an array the helmet
 # already loads, holding the target font's art (method proven on Ghost Ship, technical notes section 23).
 #   ECU_Block_NUM_Array_A = dup of ECU_Jersey_2021_NUM_Array + ECU_Jersey_2023 (block) art -> Home, Home Option
 #   ECU_Block_NUM_Array_B = dup of CMU_Jersey_2021_NUM_Array + ECU_Jersey_2023 (block) art -> Away, Black Pirate / Away Option

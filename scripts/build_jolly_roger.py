@@ -6,7 +6,7 @@ R = os.environ.get('ECU_PROJECT_DIR', '.'); F = R + '/FINAL'
 OUT = R + '/Builds/Jolly Roger'; os.makedirs(OUT, exist_ok=True)
 rd = lambda p: open(p, encoding='utf-8-sig').read()
 def wr(p, s): open(p, 'w', encoding='utf-8-sig', newline='').write(s); ET.parse(p)
-CHAR_SRGB = (0x4A, 0x4A, 0x4F)   # refine 2026-11-11: #404044 read near-black in sunlight; helmet keeps #404044 (matte lifts it)
+CHAR_SRGB = (0x4A, 0x4A, 0x4F)   # refined: #404044 read near-black in sunlight; helmet keeps #404044 (matte lifts it)
 NUM_OUTLINE_SRGB = (0x7A, 0x4F, 0xC0)   # brighter purple number outline (ECU purple #392762 vanished on charcoal)                                     # neutral charcoal (R = G like ECU's black #28282C, which renders neutral); v1 #3C3F43 rendered olive
 lin = lambda c: ((c/255 + 0.055)/1.055)**2.4 if c/255 > 0.04045 else c/255/12.92
 CHAR_LIN = [round(lin(c), 7) for c in CHAR_SRGB]
@@ -86,8 +86,8 @@ for lab in ['Adidas Base Fabric', 'AdidasHoles']: T = set_tint(T, lab, R=CH2); l
 T = set_tint(T, 'Stripe', G=PUR2); log.append('pants  stripe                    -> gold core, purple edges')
 s, e = block_for_label(T, 'Jumpman Logo'); seg = re.sub(r'<field name="colorTexture" ref="[^"]*" partitionGuid="[^"]*" />', lambda mm, _r=dupref('colorTexture', 'ECU_JM_GoldOnCharcoal_col.xml'): _r, T[s:e], 1); T = T[:s] + seg + T[e:]
 T = T.replace('</partition>', colorvalue(cg2) + '</partition>')
-JR_HIP_ALT_LOGO = False   # tried 2026-11-12, user removed the Jolly Roger alt logo entirely -> stock ECU hip logo
-if JR_HIP_ALT_LOGO and os.path.exists(JRD + 'ECU_JR_Logo_col.xml'):   # hip logo -> the user's Jolly Roger alt logo (dup of ECU_Decal_2021_02_col), pre-colored
+JR_HIP_ALT_LOGO = False   # tried, mod author removed the Jolly Roger alt logo entirely -> stock ECU hip logo
+if JR_HIP_ALT_LOGO and os.path.exists(JRD + 'ECU_JR_Logo_col.xml'):   # hip logo -> the mod author's Jolly Roger alt logo (dup of ECU_Decal_2021_02_col), pre-colored
     s_, e_ = block_for_label(T, 'Logo ECU'); seg = T[s_:e_]
     seg = re.sub(r'<field name="colorTexture" ref="[^"]*" partitionGuid="[^"]*" />', lambda mm: '<field name="colorTexture" %s />' % idref(JRD + 'ECU_JR_Logo_col.xml'), seg, 1)
     seg = re.sub(r'<field name="(normalTexture|rsmTexture)" ref="[^"]*"( partitionGuid="[^"]*")? />', lambda mm: '<field name="%s" ref="null" />' % mm.group(1), seg)
@@ -120,7 +120,7 @@ log.append('wrapper: jersey palette primary charcoal, secondary gold (gloves)')
 def name_test(u, display):
     u, c = re.subn(r'(<field name="(?:Short|Long|Medium)NameId">)[^<]*', r'\g<1>', u); assert c == 3
     return re.sub(r'(<field name="DisplayName">)[^<]*', lambda m: m.group(1) + display, u, 1)
-NAME_TEST = False   # tested 2026-11-11: blanking the IDs + DisplayName did NOT rename items in game (names come from elsewhere) -> keep stock IDs
+NAME_TEST = False   # tested: blanking the IDs + DisplayName did NOT rename items in game (names come from elsewhere) -> keep stock IDs
 if NAME_TEST: U = name_test(U, 'Jolly Roger Jersey')
 os.makedirs(OUT + '/Wrapper', exist_ok=True); wr(OUT + '/Wrapper/U_ECU_JERSEY_2023_PURPLE.xml', U)
 if NAME_TEST:

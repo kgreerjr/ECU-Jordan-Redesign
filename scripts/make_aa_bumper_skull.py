@@ -1,4 +1,4 @@
-# Away Alternate front bumper: the sleeve/hip skull (user's clean purple/white logo) in the bumper-art layout
+# Away Alternate front bumper: the sleeve/hip skull (mod author's clean purple/white logo) in the bumper-art layout
 # (square canvas; centred in the Bumper_ECU art box x 146-3950, y 1129-2966 of 4096, height-limited), as the bumper
 # channel mask: R = white parts, G = purple parts (tinted white / purple). Edges re-sharpened like the sleeve skull.
 # usage: make_aa_bumper_skull.py <ECU_skull_source_user.png> <out.png>

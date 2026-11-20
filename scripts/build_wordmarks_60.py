@@ -1,4 +1,4 @@
-"""ITEM 9 - matching wordmarks (6.0).
+"""Matching wordmarks (6.0).
 Plan: EC = EAST CAROLINA, P = PIRATES. Jersey chest wordmark and helmet back bumper match.
   Home P, Away EC, Black Pirate P, Treasure Island P, Ghost Ship EC, Jolly Roger P,
   Home Option P, Away Option EC.

@@ -1,4 +1,4 @@
-"""ITEM 7 - captain patches, Michigan layout.
+"""Captain patches, Michigan layout.
 Every ECU jersey: EA's CAPTAIN_01 "C" (Michigan's style), one color = that jersey's
 number fill color (Color1/2/3 all the same ref, like Michigan), Michigan's patch
 position/size, and the AAC conference logo moved/sized to Michigan's BIG10 values.

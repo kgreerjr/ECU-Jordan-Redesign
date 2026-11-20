@@ -135,7 +135,7 @@ elif mode == 'skullpos':
     wr(J, s)
 
 elif mode == 'goldhelmet':
-    # Away Alternate helmet v2 (user, 2026-11-17): satin ECU-gold shell, white facemask / bumpers / chin parts,
+    # Away Alternate helmet v2 (mod author): satin ECU-gold shell, white facemask / bumpers / chin parts,
     # Away's exact "Pirates" script in purple with a white outline (G = fill, R = outline in that art),
     # narrow purple | white | purple stripe, back number purple / white, ECU bumpers purple / gold / white.
     # build_awayalt_60.py goldhelmet <AWAYOPT helmet xml in/out> <WHITESCRIPT helmet xml> <dup export dir>
@@ -182,7 +182,7 @@ elif mode == 'goldhelmet':
     wr(H, s)
 
 elif mode == 'goldpants':
-    # Away Alternate pants v2 (user, 2026-11-17): ECU-gold pants (like Home's), narrow purple | white | purple stripe
+    # Away Alternate pants v2 (mod author): ECU-gold pants (like Home's), narrow purple | white | purple stripe
     # (ECU_AA_Pants_Stripe_col dup), the purple/white sleeve skull on the hip (ECU_AA_Skull_col is a dup of the hip
     # logo's own texture, ECU_Decal_2021_02_col), Home's purple-on-gold Jumpman.
     # build_awayalt_60.py goldpants <AWAYOPT pants xml in/out> <YELLOW (Home) pants xml> <dup export dir>
@@ -210,8 +210,8 @@ elif mode == 'goldpants':
     wr(P, s)
 
 elif mode == 'goldtune':
-    # v2 tweaks (user): stickers + back number closer to the narrow stripe (same stripe-to-sticker gap as the
-    # triple-stripe helmets: measured ~114-119 px on the user's back view at ~1600 px per sticker-offset unit and
+    # v2 tweaks (mod author): stickers + back number closer to the narrow stripe (same stripe-to-sticker gap as the
+    # triple-stripe helmets: measured ~114-119 px on the mod author's back view at ~1600 px per sticker-offset unit and
     # ~880 px per back-number unit), back-bumper ECU 60% of v1.
     H = sys.argv[2]; s = rd(H); DU = 0.07
     def tf(t, lab):
@@ -225,7 +225,7 @@ elif mode == 'goldtune':
         m = tf(s, lab); u = float(re.search(r'name="offsetU">([^<]+)', m.group(2)).group(1))
         nu = round(u - DU if u > 0 else u + DU, 4)
         # v3 pixel check against Away's back view: AAC +0.008, CJ2K -0.003, warning label to Away's 7 px from the number
-        nu = {'Flag': -0.105, 'AAC  Decal': -0.111, 'CJ2K Sticker': 0.101, 'Warning Label': 0.349}.get(lab, nu)   # v4: every sticker ~44 px from the stripe on the user's back view (was flag 40 / AAC 28 | CJ2K 54 / number 55)   # label: back to stock 0.349 (0.255 overlapped the number)
+        nu = {'Flag': -0.105, 'AAC  Decal': -0.111, 'CJ2K Sticker': 0.101, 'Warning Label': 0.349}.get(lab, nu)   # v4: every sticker ~44 px from the stripe on the mod author's back view (was flag 40 / AAC 28 | CJ2K 54 / number 55)   # label: back to stock 0.349 (0.255 overlapped the number)
         s = setf(s, m, {'offsetU': nu, 'z': nu}); print(lab, u, '->', nu)
     s, n = re.subn(r'(<field name="backnumberoffset_scale">\s*<complex type="Vec4">\s*<field name="x">)[^<]*', lambda mm: mm.group(1) + '0.176', s, count=1); assert n == 1
     for lab, (su, sv) in (('Backplate_X1', (0.27, 0.27)), ('Backplate', (0.456, 0.3472))):

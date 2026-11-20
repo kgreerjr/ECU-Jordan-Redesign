@@ -1,4 +1,4 @@
-# ECU uniform-set lineup (user's spec). Rewrites 6 U_UniformType_ECU_* sets + the TeamVisuals Uniforms order.
+# ECU uniform-set lineup (mod author's spec). Rewrites 6 U_UniformType_ECU_* sets + the TeamVisuals Uniforms order.
 # Unused sets stay in the game files but are dropped from ECU's list; Current7thAlternate = Treasure Island (ALT3).
 import os, re, xml.etree.ElementTree as ET
 R = os.environ.get('ECU_PROJECT_DIR', '.'); SRC = R + '/Backups/ECU uniform sets/'

@@ -1,4 +1,4 @@
-"""Purple Away Alternate (preview, 2026-11-18): the Away Alternate jersey with a purple body.
+"""Purple Away Alternate (preview): the Away Alternate jersey with a purple body.
 Fabric purple; numbers + nameplate white (numbers keep the gold outline); chest ECU white / gold / purple;
 sleeve skulls white with gold hat + linework; Jumpman gold-on-purple (Home's baked texture); AAC patch Home's colors.
 Gold collar + cuffs unchanged. usage: build_purple_aa_preview.py <AWAYOPT jersey xml> <out xml> [purplehat]"""

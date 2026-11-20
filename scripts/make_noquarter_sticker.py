@@ -1,4 +1,4 @@
-# "NO QUARTER" helmet sticker (replaces the AAC sticker, 2026-11-17). Source: the user's Gemini flag on green
+# "NO QUARTER" helmet sticker (replaces the AAC sticker). Source: the mod author's Gemini flag on green
 # (ECU_NoQuarter_source.jpg: purple field, gold skull/cutlasses/lettering, white die-cut border).
 # Unmix every pixel into green / purple / gold / white, cut out, centre on a square canvas (flag 92% of the width), and
 # store as the AAC sticker's channels so each helmet's existing AAC tints color it:

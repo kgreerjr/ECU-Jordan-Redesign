@@ -1,4 +1,4 @@
-"""ITEM 7 test: turn on EA's captain patch on the Home jersey (PURPLEALT) - visible in the dynasty roster editor.
+"""Test: turn on EA's captain patch on the Home jersey (PURPLEALT) - visible in the dynasty roster editor.
 Patch art = EA's CAPTAIN_04 block "C" (looked up by texture NAME, shared bundle).
 Colors are deliberately three different ones so the in-game test shows which
 channel each palette color drives:  Color1 = PURPLE, Color2 = GOLD, Color3 = WHITE (Home numbers: white, gold outline).

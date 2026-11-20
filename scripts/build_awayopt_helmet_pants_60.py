@@ -1,6 +1,6 @@
-# 6.0 rule (user): no uniform shares a helmet, jersey or pants. Away Option gets its own copies of Black Pirate's helmet + pants.
+# 6.0 rule (mod author): no uniform shares a helmet, jersey or pants. Away Option gets its own copies of Black Pirate's helmet + pants.
 #   ECU_HELMET_2021_AWAYOPT + U_ECU_HELMET_2021_AWAYOPT (Id 91726005), ECU_PANTS_2023_AWAYOPT + U_ECU_PANTS_2023_AWAYOPT (Id 91726006)
-#   Content = FINAL BLACKOUT helmet / BLACK pants (identity = the user's duplicates). Preset Current2ndAlternate -> new wrappers.
+#   Content = FINAL BLACKOUT helmet / BLACK pants (identity = the mod author's duplicates). Preset Current2ndAlternate -> new wrappers.
 #   Usage: python3 build_awayopt_helmet_pants_60.py [helmet] [pants]
 import os, re, sys
 src = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'build_treasure_island.py'), encoding='utf-8').read()

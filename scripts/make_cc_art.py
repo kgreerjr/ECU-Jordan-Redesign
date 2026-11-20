@@ -1,4 +1,4 @@
-"""ITEM 10: City Connect helmet art (v4, final layout like the concept).
+"""City Connect helmet art (v4, final layout like the concept).
 Inputs (FINAL/.../City Connect): ECU_CC_Helmet_Left_col.jpg (Cupola), ECU_CC_Helmet_Right_col.jpg (storm sky + small stadium),
 ECU_CC_Logo.jpg (Gemini airbrushed ECU logo on solid green).
 - Left: zoomed 1.25x (crop x 0.10-0.90, y 0.11-0.91) so the Cupola sits between the two Gemini sizes.
@@ -46,8 +46,8 @@ L = np.asarray(L).astype(float)
 # v4.4 (cohesion with the right side): cooler, darker sky like the storm side (less magenta), same dark crown,
 # Cupola raised above the ear holes / chin strap and moved back out from behind the facemask clips, sized to match the skull.
 L = L * np.array([0.86, 0.93, 1.0]) * 0.94
-L = fit(L, 0.62, 0.49, 0.48)   # v5 (user): zoomed out, Cupola smaller and toward the front
-# v4.5 (user: the oak fading out at the back looked incomplete): the scene's cut-off oak at the back becomes plain sky and a
+L = fit(L, 0.62, 0.49, 0.48)   # v5 (mod author): zoomed out, Cupola smaller and toward the front
+# v4.5 (mod author: the oak fading out at the back looked incomplete): the scene's cut-off oak at the back becomes plain sky and a
 # whole airbrushed oak (ECU_CC_Tree.png, transparent PNG) stands on the back quarter, trunk to canopy, ending at the stripe.
 import os
 TREE = f'{SRC}/ECU_CC_Tree.png'
@@ -64,7 +64,7 @@ if os.path.exists(TREE):
     a = T[:, xs - x0:xe - x0, 3:4] / 255; L[y0:y0 + th, xs:xe] = L[y0:y0 + th, xs:xe] * (1 - a) + T[:, xs - x0:xe - x0, :3] * a
 Image.fromarray(L.clip(0, 255).astype(np.uint8)).save(f'{OUT}/ECU_CC_Helmet_Left_col.png')
 R0 = np.asarray(Image.open(f'{SRC}/ECU_CC_Helmet_Right_col.jpg').convert('RGB').resize((N, N), Image.LANCZOS)).astype(float)
-# v4.2 (user: "the image blows up a lot more than you thought"): measured on the grid test, a side view only shows the middle
+# v4.2 (the art renders much larger on the shell than first estimated): measured on the grid test, a side view only shows the middle
 # of each image (x ~0.19-0.81, y ~0.22-0.90), magnified ~1.6x. So the whole Gemini painting is shrunk into that window
 # (FIT, centered at x 0.5 / y 0.56) and the hidden margins (crown, back seam, under the facemask/bumper) are filled by
 # extending its edges, blurred and darkened toward the crown.
@@ -106,7 +106,7 @@ for sg in (-1, 1): x = c + sg * (254 + 230); band(min(x, x + sg * 50), max(x, x 
 Image.fromarray(st, 'RGBA').save(f'{OUT}/ECU_CC_Helmet_Back_col (stripe).png')
 print('ok', 'logo', logo.size, 'at', (x0, y0))
 
-# v6 (user: blend needs work): ONE shared background sky G(y), the same function on both halves, taken from the paintings'
+# v6 (mod author: blend needs work): ONE shared background sky G(y), the same function on both halves, taken from the paintings'
 # own skies (row median over the visible part of both sides, ground rows -> dark purple), smoothed. Every shared edge
 # (crown, back centerline, front centerline) eases into G with a wide smoothstep, so the halves meet in identical colour
 # and the transition is a soft gradient, not a dark band.

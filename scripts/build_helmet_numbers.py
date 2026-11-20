@@ -1,4 +1,4 @@
-# 5.4 (ITEM 4): every ECU helmet's back number sits opposite the AAC logo (Jolly Roger layout: x 0.21, y -0.06 in
+# 5.4: every ECU helmet's back number sits opposite the AAC logo (Jolly Roger layout: x 0.21, y -0.06 in
 # backnumberoffset_scale; AAC is at overlay offsetU -0.16 on every ECU helmet) and is colored like its uniform's numbers
 # (R = fill, G = outline). Fonts unchanged (each helmet keeps the number texture its bundle loads).
 # Run AFTER the per-uniform helmet builders: it post-processes FINAL/Helmets in place (idempotent), adding the
@@ -6,8 +6,8 @@
 import os, re, uuid, xml.etree.ElementTree as ET
 R = os.environ.get('ECU_PROJECT_DIR', '.'); FIN = R + '/FINAL/Helmets/'; STOCK = R + '/Backups/ECU helmets/Part items/'
 X, Y = '0.246', '-0.081'
-NZ, NW = '6.35', '4.12'   # number scale (stock 9.231635 / 6). TEST: assumed divisor (smaller = bigger number), /1.6 to match the AAC logo's height   # v2 (user 'down a tad'): was -0.06
-FLAG_U, FLAG_V = '-0.1395', '0.274'   # flag overlay offset (stock 0 / 0.36-0.389 = on the stripe). v2 (user): above the AAC logo (AAC at -0.16 / 0.07); CJ2K sticker mirrors it at +0.16 / 0.30 above the number
+NZ, NW = '6.35', '4.12'   # number scale (stock 9.231635 / 6). TEST: assumed divisor (smaller = bigger number), /1.6 to match the AAC logo's height   # v2 (mod author: moved down slightly): was -0.06
+FLAG_U, FLAG_V = '-0.1395', '0.274'   # flag overlay offset (stock 0 / 0.36-0.389 = on the stripe). v2 (mod author): above the AAC logo (AAC at -0.16 / 0.07); CJ2K sticker mirrors it at +0.16 / 0.30 above the number
 lin = lambda c: ((c/255 + 0.055)/1.055)**2.4 if c/255 > 0.04045 else c/255/12.92
 PLAN = {   # helmet: (fill, outline, why)  - names = team/global color assets, '#hex' = new ColorValue, None = keep current tint
  'ECU_HELMET_2025_PURPLE_yellowFacemask': ('global_whiteHelmet', 'ECU_Gold',   'Home: Purple Jersey numbers white / gold'),
@@ -72,7 +72,7 @@ def set_num(t):
     k = t.index('<field name="backnumberoffset_scale">'); seg, c1 = re.subn(r'(<field name="x">)[^<]*', lambda m: m.group(1) + X, t[k:k + 250], 1); seg, c2 = re.subn(r'(<field name="y">)[^<]*', lambda m: m.group(1) + Y, seg, 1)
     seg, c3 = re.subn(r'(<field name="z">)[^<]*', lambda m: m.group(1) + NZ, seg, 1); seg, c4 = re.subn(r'(<field name="w">)[^<]*', lambda m: m.group(1) + NW, seg, 1); assert c3 == c4 == 1
     assert c1 == c2 == 1; return t[:k] + seg + t[k + 250:]
-FLAG_SU, FLAG_SV = '0.1068', '0.2495'   # v6 (user): flag width = AAC width (69 px), so centered on the AAC it keeps the AAC's 24 px gap to the stripe; CJ2K sticker = same width   # v5 (user: flag + CJ2K sticker same size): stock 0.15 x 0.35 (2025) / 0.4 (2021) -> ~70 x 45 px, one size on every helmet
+FLAG_SU, FLAG_SV = '0.1068', '0.2495'   # v6 (mod author): flag width = AAC width (69 px), so centered on the AAC it keeps the AAC's 24 px gap to the stripe; CJ2K sticker = same width   # v5 (mod author: flag + CJ2K sticker same size): stock 0.15 x 0.35 (2025) / 0.4 (2021) -> ~70 x 45 px, one size on every helmet
 def move_flag(t):
     i = t.index('<field name="label">Flag</field>'); g = re.search(r'name="overlay_transform" ref="([0-9a-f-]{36})"', t[i:i + 600]).group(1)
     t = set_tr(t, g, FLAG_U, FLAG_V); a = t.index('<instance guid="%s"' % g); b = t.index('</instance>', a)
@@ -84,14 +84,14 @@ BLOCK = ['ECU_HELMET_2021_WHITESCRIPT', 'ECU_HELMET_2021_BLACKOUT', 'ECU_HELMET_
 DEF = dict(X=X, Y=Y, NZ=NZ, NW=NW, FLAG_U=FLAG_U, FLAG_V=FLAG_V, FLAG_SU=FLAG_SU, FLAG_SV=FLAG_SV, STICKER_U=STICKER_U, STICKER_V=STICKER_V,
            STICKER_SU=STICKER_SU, STICKER_SV=STICKER_SV, AAC_U=AAC_U, AAC_V=AAC_V, AAC_SU='0.15', AAC_SV='0.35')
 OVR = {}
-for b in BLOCK:   # 5.4 v8 (user): block numbers read bigger than the serif ones at the same box size -> 90%, left edge kept
+for b in BLOCK:   # 5.4 v8 (mod author): block numbers read bigger than the serif ones at the same box size -> 90%, left edge kept
     OVR[b] = dict(NZ='7.06', NW='4.58', X='0.236', STICKER_U='0.137')
 # Away (WHITESCRIPT): its stripe is twice as wide (purple-gold-purple), so the group moves out and shrinks to 85% to clear the warning label
 OVR['ECU_HELMET_2021_WHITESCRIPT'] = dict(AAC_U='-0.179', AAC_SU='0.1275', AAC_SV='0.2975', FLAG_U='-0.1725', FLAG_SU='0.0908', FLAG_SV='0.2121',
                                           X='0.314', NZ='8.30', NW='5.39', STICKER_U='0.180', STICKER_SU='0.1275', STICKER_SV='0.2975')
-OVR['ECU_HELMET_2026_GHOST'] = dict(OVR['ECU_HELMET_2021_WHITESCRIPT']); OVR['ECU_HELMET_2026_GHOST'].update(NZ='7.47', NW='4.85', X='0.322')   # v2: serif ECU 2021 font reads ~10% bigger than CMU block -> same visual size, left edge kept   # 5.0 (ITEM 5): Ghost Ship gets Away's triple stripe -> Away's back spacing
+OVR['ECU_HELMET_2026_GHOST'] = dict(OVR['ECU_HELMET_2021_WHITESCRIPT']); OVR['ECU_HELMET_2026_GHOST'].update(NZ='7.47', NW='4.85', X='0.322')   # v2: serif ECU 2021 font reads ~10% bigger than CMU block -> same visual size, left edge kept   # 5.0: Ghost Ship gets Away's triple stripe -> Away's back spacing
 
-# 6.0 ITEM 6: triple stripes -> Away's wide-stripe spacing. Blackout = block font (as Away). Home + Jolly Roger = 2025 shell, serif ECU font: start from Ghost's serif values, TUNE in the editor.
+# 6.0: triple stripes -> Away's wide-stripe spacing. Blackout = block font (as Away). Home + Jolly Roger = 2025 shell, serif ECU font: start from Ghost's serif values, TUNE in the editor.
 OVR['ECU_HELMET_2021_BLACKOUT'] = dict(OVR['ECU_HELMET_2021_WHITESCRIPT'])
 OVR['ECU_HELMET_2021_AWAYOPT'] = dict(OVR['ECU_HELMET_2021_WHITESCRIPT'])
 OVR['ECU_HELMET_2025_PURPLE_yellowFacemask'] = dict(OVR['ECU_HELMET_2026_GHOST'])
@@ -103,13 +103,13 @@ for _h in ('ECU_HELMET_2025_PURPLE_yellowFacemask', 'ECU_HELMET_2025_PURPLE_purp
 OVR['ECU_HELMET_2025_PURPLE_yellowFacemask'].update(NZ='9.13', NW='5.93', X='0.286')
 OVR['ECU_HELMET_2021_PURPLE_yellowFacemask'] = dict(NZ='7.06', NW='4.58', X='0.236', STICKER_U='0.137')
 OVR.pop('ECU_HELMET_2021_WHITE', None)
-OVR['ECU_HELMET_2025_PURPLE_yellowFacemask'] = dict(OVR['ECU_HELMET_2021_WHITESCRIPT'])   # v4 (user): Home's back group = exactly Away / Black Pirate's values (same block font now)
+OVR['ECU_HELMET_2025_PURPLE_yellowFacemask'] = dict(OVR['ECU_HELMET_2021_WHITESCRIPT'])   # v4 (mod author): Home's back group = exactly Away / Black Pirate's values (same block font now)
 def params(h):
     g = globals(); g.update(DEF); g.update(OVR.get(h, {}))
 def move_aac(t):
     i = t.index('<field name="label">AAC  Decal</field>'); gg = re.search(r'name="overlay_transform" ref="([0-9a-f-]{36})"', t[i:i + 600]).group(1)
     return set_scale(set_tr(t, gg, AAC_U, AAC_V), gg, AAC_SU, AAC_SV)
-WARN_U = {'ECU_HELMET_2025_PURPLE_yellowFacemask': '0.349'}   # 6.0 (user): EA put the warning label at 0.325 on the 2025 shell (0.349 on 2021) -> crowded the number; Home matches the 2021 triple stripes
+WARN_U = {'ECU_HELMET_2025_PURPLE_yellowFacemask': '0.349'}   # 6.0 (mod author): EA put the warning label at 0.325 on the 2025 shell (0.349 on 2021) -> crowded the number; Home matches the 2021 triple stripes
 def move_warn(t, h):
     if h not in WARN_U: return t
     i = t.index('<field name="label">Warning Label</field>'); g = re.search(r'name="overlay_transform" ref="([0-9a-f-]{36})"', t[i:i + 600]).group(1)

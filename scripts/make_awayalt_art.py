@@ -76,7 +76,7 @@ rsm = np.dstack([(66 + (93 - 66) * cov + 10 * (twill - 0.5) * cov) / 255,
 save(rsm, 'ECU_AA_WM_rsm.png')
 
 # ---------------- sleeve skull ----------------
-# Source: the user's clean purple/white logo (ECU_skull_source_user.png, transparent background). Upscaled ~2.2x with
+# Source: the mod author's clean purple/white logo (ECU_skull_source_user.png, transparent background). Upscaled ~2.2x with
 # Lanczos, then the edges are re-sharpened with a 1.5 px ramp so they come out crisp (the old 512 mask was grainy).
 # Placed in the same box as the first version so the in-editor size/position doesn't change.
 USER = os.path.join(os.path.dirname(os.path.abspath(SKULL)), 'ECU_skull_source_user.png') if not os.path.exists('art/ECU_skull_source_user.png') else 'art/ECU_skull_source_user.png'

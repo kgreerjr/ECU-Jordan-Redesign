@@ -1,4 +1,4 @@
-# ITEM 6 (6.0): Away-style triple stripes (FiveStripe layout: R center, G outer, B gaps = shell) on Home, Black Pirate/Away Option, Jolly Roger.
+# 6.0: Away-style triple stripes (FiveStripe layout: R center, G outer, B gaps = shell) on Home, Black Pirate/Away Option, Jolly Roger.
 # Matte decals (metal 0 / refl 0.4 / smooth 0.35), no stripe rsm. Post-processes FINAL/Helmets in place; run build_helmet_numbers.py after.
 #  Blackout (2021 shell): WHITESCRIPT's 2021 Center Stripe layer, texture ECU_GS_Helmet_Stripe_col (dup of BLA_Decal, in this helmet's bundle) - gold | purple | gold, black gaps
 #  Home (2025 shell):     Jolly Roger's 2025 Center Stripe layer, texture ECU_JR_Helmet_Stripe_col (dup of WHI_Decal_01) - gold | white | gold, purple gaps

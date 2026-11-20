@@ -1,4 +1,4 @@
-# Treasure Island alt-logo textures from the user's art (ECU_TI_alt_logo_source.png).
+# Treasure Island alt-logo textures from the mod author's art (ECU_TI_alt_logo_source.png).
 # usage: python3 make_ti_logos.py SRC.png OUTDIR [HELMET_SCALE] [PREFIX]   (PREFIX ECU_TI -> ECU_TI_Helmet_Logo_col / ECU_TI_Logo_col; ECU_JR -> Jolly Roger)
 # Cleans the halo (keep largest opaque blob), crops, fits into the footprint of the decal it replaces, bleeds edge color into transparent pixels.
 import sys, numpy as np

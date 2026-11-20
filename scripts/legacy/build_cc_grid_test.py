@@ -1,4 +1,4 @@
-"""ITEM 10 step 1: grid test on the Home Option helmet (2021_PURPLE_yellowFacemask).
+"""Step 1: grid test on the Home Option helmet (2021_PURPLE_yellowFacemask).
 Right/Left Side Logo layers -> ECU_CC_Helmet_Right/Left_col, Warning Label (rear stickers UV) -> ECU_CC_Helmet_Back_col.
 Full UV coverage (scale 1, offset 0), full-color (UseDefaults + identity tints), no normal / shine maps.
 TEST ONLY - restore the helmet from FINAL afterwards."""

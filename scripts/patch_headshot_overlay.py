@@ -1,4 +1,4 @@
-# Roster headshot jersey (as run for ECU, in the cloud workspace with OpenCV):
+# Roster headshot jersey (as run for ECU, with OpenCV):
 # paint the old logo out of tjer_teamjerseys_<TEAM> and draw the new one in its place.
 # Usage: python3 patch_headshot_overlay.py <overlay.png decoded from the DDS> <Jumpman_col.dds> <out.png>
 import sys, io, numpy as np, cv2

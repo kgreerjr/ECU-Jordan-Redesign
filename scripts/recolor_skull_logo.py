@@ -1,5 +1,5 @@
 # Recolor ECU's standard skull (BLA decal mask, sRGB-stored: R=trim/ECU/bandana, G=skull+bones, B=hat, none=line color)
-# usage: python3 recolor.py MASK.png OUT.png TRIM SKULL HAT LINE   (hex colors)
+# usage: python3 recolor_skull_logo.py MASK.png OUT.png TRIM SKULL HAT LINE   (hex colors)
 import sys, numpy as np
 from PIL import Image
 def lin(c): return np.where(c<=0.04045, c/12.92, ((c+0.055)/1.055)**2.4)

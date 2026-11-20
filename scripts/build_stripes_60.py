@@ -1,4 +1,4 @@
-# 6.0 ITEM 8: jersey sleeve + pants stripes match each uniform's helmet stripe (canvas stripe plan).
+# 6.0: jersey sleeve + pants stripes match each uniform's helmet stripe (canvas stripe plan).
 # Sleeves: Stripe 1 / Stripe 2 = outer bands, Middle Stripe = center. Pants (ECU_Pants_2023_Stripe_01_col): R center, G outer, B gaps.
 #   Home jersey (PURPLEALT): white|gold|white -> gold|white|gold   (pants YELLOW already purple|white|purple)
 #   Jolly Roger jersey (PURPLE): purple|gold|purple -> gold|white|gold;  pants: -> gold|white|gold, charcoal gaps
@@ -23,7 +23,7 @@ sleeves(J_ + 'ECU_JERSEY_2023_PURPLE.xml', GOLD, WHITE); print('Jolly Roger jers
 p = P_ + 'ECU_Pants_2023_PURPLE.xml'; D = Doc(rd(p))
 D.tint('R', WHITE, 'Stripe'); D.tint('G', GOLD, 'Stripe'); D.tint('B', D.color([round(lin(c), 7) for c in (0x4A, 0x4A, 0x4F)]), 'Stripe')   # charcoal = JR body #4A4A4F
 wr(p, D.done()); print('Jolly Roger pants: gold | white | gold, charcoal gaps')
-# v2 (user): Treasure Island jersey + pants white | gold | white (TI's own metallic gold #B09257 center, game white outer; pants gaps gunmetal #5B5962)
+# v2 (mod author): Treasure Island jersey + pants white | gold | white (TI's own metallic gold #B09257 center, game white outer; pants gaps gunmetal #5B5962)
 TIG = [0.434, 0.287, 0.095]   # ND_MetallicGold (#B09257)
 p = J_ + 'ECU_JERSEY_2023_WHITE.xml'; D = Doc(rd(p)); g = D.color(TIG)
 for lab in ('Stripe 1', 'Stripe 2'): D.tint('R', WHITE, lab)

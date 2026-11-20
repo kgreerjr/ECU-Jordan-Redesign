@@ -43,7 +43,7 @@ def jm(bg, fig, name):
     rgb = (srgb(a[..., 0:1] * bg + a[..., 1:2] * fig) * 255 + 0.5).astype(np.uint8); rgb[a[..., 3] == 0] = (srgb(bg) * 255 + 0.5).astype(np.uint8)
     Image.fromarray(np.dstack([rgb, (a[..., 3] * 255 + 0.5).astype(np.uint8)]), 'RGBA').save(OUT + '/Jumpman images/%s.png' % name); shutil.copy(OUT + '/Jumpman images/%s.png' % name, FIN); print(name)
 JMC = hexlin('#6E55A8')   # v2: deeper purple - LAV figure was hard to see on the white body
-GFILL, LOUT = hexlin('#9A99A4'), hexlin('#9479D0')   # v3 (user): gray figure, lavender outline patch - matches numbers/wordmark
+GFILL, LOUT = hexlin('#9A99A4'), hexlin('#9479D0')   # v3 (mod author): gray figure, lavender outline patch - matches numbers/wordmark
 jm(LOUT, GFILL, 'ECU_GS_JM_Jersey_col'); jm(LOUT, GFILL, 'ECU_GS_JM_Pants_col')
 # ---- helmet sides: GS_logo_black is the stock BLA decal recolored, so it already matches that decal's size/placement ----
 # v2 helmet logo (deeper lavender #9479D0, hat #CDCED5, lines #2B2531) is made by recolor_skull_logo.py from the stock BLA decal -> FINAL/Ghost Ship/ECU_GS_Helmet_Logo_col.png

@@ -1,11 +1,11 @@
-# Ghost Ship helmet logo v6 (user's ship art): cut out of the black JPG background, decomposed into the helmet decal's
+# Ghost Ship helmet logo v6 (mod author's ship art): cut out of the black JPG background, decomposed into the helmet decal's
 # tint-mask channels (R = lavender, G = white, B = gray, remainder = line), fit to the stock skull's footprint.
 # Lines are nudged to a dark gray (K x the gray channel) like the skull mask. Stored sRGB-encoded like the stock mask.
 import sys, numpy as np
 from PIL import Image
 from scipy import ndimage
 SRC = sys.argv[1]; OUT = sys.argv[2] if len(sys.argv) > 2 else 'ECU_GS_Helmet_Logo_col.png'; K = 0.06
-SCALE = float(sys.argv[3]) if len(sys.argv) > 3 else 0.75   # share of the stock skull footprint (v1 = 1.0, user: 'should be smaller')
+SCALE = float(sys.argv[3]) if len(sys.argv) > 3 else 0.75   # share of the stock skull footprint (v1 = 1.0, mod author: 'should be smaller')
 DX = int(sys.argv[4]) if len(sys.argv) > 4 else 120; DY = int(sys.argv[5]) if len(sys.argv) > 5 else -95   # px on the 1024 canvas: +x = toward the back of the helmet (facemask covered the bow at 0,0)
 lin = lambda c: np.where(c <= 0.04045, c / 12.92, ((c + 0.055) / 1.055) ** 2.4)
 srgb = lambda l: np.where(l <= 0.0031308, l * 12.92, 1.055 * np.clip(l, 0, None) ** (1 / 2.4) - 0.055)

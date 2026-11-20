@@ -1,4 +1,4 @@
-"""ITEM 10 City Connect (Greenville Nights): tileable star-speckle fabric masks (same channel setup as Ghost Ship's fog):
+"""City Connect (Greenville Nights): tileable star-speckle fabric masks (same channel setup as Ghost Ship's fog):
 R = base (tinted midnight purple), G = stars (tinted star white), B = soft haze (tinted violet); R+G+B = 1.
 Output PNG + DDS (R8G8B8A8_UNORM, full mips; default_mask dups need DDS or Frosty keeps them 16x16)."""
 import sys, struct, numpy as np
@@ -28,5 +28,5 @@ def make(out, seed, n_small=90, n_big=14, N=1024, haze=True):
     hdr = struct.pack('<4sIIIIIII', b'DDS ', 124, flags, N, N, N * 4, 0, len(mips)) + b'\0' * 44 + pf + struct.pack('<IIIII', 0x1000 | 0x400000 | 0x8, 0, 0, 0, 0)
     open(out + '.dds', 'wb').write(hdr + struct.pack('<IIIII', 28, 3, 0, 1, 0) + data)
     print(out, 'stars', (G > 0.3).sum(), 'px')
-make('ECU_CC_Stars_Jersey_col', 11, haze=False)   # v2 (user): stars only, matches the pants
+make('ECU_CC_Stars_Jersey_col', 11, haze=False)   # v2 (mod author): stars only, matches the pants
 make('ECU_CC_Stars_Pants_col', 23, haze=False)   # v2: the game reads this mask as sRGB, so haze areas rendered as dark blotches on the pants -> stars only

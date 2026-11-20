@@ -1,5 +1,5 @@
-# 6.0 ITEM 8: Away Option gets its own white jersey (gold | purple | gold sleeves, matching its Blackout helmet and black pants).
-# New pieces (nothing overwritten): ECU_JERSEY_2026_AWAYOPT (content = FINAL WHITEALT, identity = the user's duplicate),
+# 6.0: Away Option gets its own white jersey (gold | purple | gold sleeves, matching its Blackout helmet and black pants).
+# New pieces (nothing overwritten): ECU_JERSEY_2026_AWAYOPT (content = FINAL WHITEALT, identity = the mod author's duplicate),
 # U_ECU_JERSEY_2026_AWAYOPT (Id 91726004, same white/purple glove palette), preset Current2ndAlternate -> the new wrapper.
 import os, re
 src = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'build_treasure_island.py'), encoding='utf-8').read()

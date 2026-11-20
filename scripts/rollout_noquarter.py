@@ -1,4 +1,4 @@
-# ITEM 16 rollout: No Quarter flag on the other 7 helmets (Away = the approved reference, done by hand).
+# Rollout: No Quarter flag on the other 7 helmets (Away = the approved reference, done by hand).
 # Away moves (orig -> final): Flag -0.1725 -> -0.1747, NQ at the old CJ2K spot -0.001, CJ2K to the old AAC spot +0.0032 inward,
 # number x -0.0134. Treasure Island stickers are 1.176x larger, so its moves scale by 1.176.
 # Greenville Nights (one row: NQ | number | CJ2K): NQ mirrors CJ2K, 0.0032 farther out (NQ art is that much wider than CJ2K's).

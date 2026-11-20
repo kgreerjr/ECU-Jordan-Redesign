@@ -1,4 +1,4 @@
-"""ITEM 10 phase 2: City Connect sleeve patch (Cupola badge) on ECU_JERSEY_2026_CITY.
+"""Phase 2: City Connect sleeve patch (Cupola badge) on ECU_JERSEY_2026_CITY.
 Copies Ghost Ship's two stock sleeve-decal layers (standard/tight + long sleeves; EA's sleeveDecalDuplicate UV set puts the
 decal on both sleeves) into two empty overlay slots, full colour (UseDefaults + identity tints), texture = ECU_CC_Patch_col.
 usage: build_cc_patch_60.py <CITY jersey xml in/out> <Ghost jersey xml> <ECU_CC_Patch_col dup export xml> [scale]"""

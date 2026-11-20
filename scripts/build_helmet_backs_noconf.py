@@ -1,7 +1,7 @@
-# 6.0 helmet backs without the conference sticker (2026-11-17). EA's helmet stickers never follow a conference change
+# 6.0 helmet backs without the conference sticker. EA's helmet stickers never follow a conference change
 # (Ohio State loses its Big Ten sticker in the Big 12 too), and ECU usually leaves the AAC in dynasty, so the AAC sticker
 # is removed and the back re-laid out, one helmet at a time.
-# Layout v1 (user, Away first): everything on the AAC's level; AAC gone; number centered on the stripe;
+# Layout v1 (mod author, Away first): everything on the AAC's level; AAC gone; number centered on the stripe;
 # CJ2K where the number was (same U, AAC's V); flag where the AAC was (AAC's U and V). Warning label unchanged.
 # usage: build_helmet_backs_noconf.py <helmet xml in/out>
 import re, sys, xml.etree.ElementTree as ET
